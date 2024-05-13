@@ -4,7 +4,7 @@ import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
 import NavLink from '@/Components/NavLink.vue';
 
-import {ChevronDownIcon, ShoppingCartIcon} from '@heroicons/vue/24/solid'
+import {ChevronDownIcon, ShoppingCartIcon} from '@heroicons/vue/24/outline'
 
 const themes = [
     "light",
