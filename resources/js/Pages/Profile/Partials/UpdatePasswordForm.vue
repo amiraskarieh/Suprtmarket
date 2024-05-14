@@ -1,10 +1,9 @@
 <script setup>
-import { ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
 import FormSection from '@/Components/FormSection.vue';
+import {useToast} from "vue-toastification";
 
-const passwordInput = ref(null);
-const currentPasswordInput = ref(null);
+const toast = useToast()
 
 const form = useForm({
     current_password: '',
@@ -16,18 +15,14 @@ const updatePassword = () => {
     form.put(route('user-password.update'), {
         errorBag: 'updatePassword',
         preserveScroll: true,
-        onSuccess: () => form.reset(),
-        onError: () => {
-            if (form.errors.password) {
-                form.reset('password', 'password_confirmation');
-                passwordInput.value.focus();
-            }
-
-            if (form.errors.current_password) {
-                form.reset('current_password');
-                currentPasswordInput.value.focus();
-            }
+        onError: (error) => {
+            for (const errorKey in error)
+                toast.error(error[errorKey])
         },
+        onSuccess: () => {
+            toast.success('now, your password updated successfully!')
+            form.reset()
+        }
     });
 };
 </script>
@@ -50,7 +45,6 @@ const updatePassword = () => {
                 <input
                     id="current_password"
                     v-model="form.current_password"
-                    ref="currentPasswordInput"
                     type="password"
                     class="input input-bordered w-full text-base-content"
                     required
@@ -65,7 +59,6 @@ const updatePassword = () => {
                 <input
                     id="current_password"
                     v-model="form.password"
-                    ref="passwordInput"
                     type="password"
                     class="input input-bordered w-full text-base-content"
                     required
@@ -80,7 +73,6 @@ const updatePassword = () => {
                 <input
                     id="current_password"
                     v-model="form.password_confirmation"
-                    ref="passwordInput"
                     type="password"
                     class="input input-bordered w-full text-base-content"
                     required

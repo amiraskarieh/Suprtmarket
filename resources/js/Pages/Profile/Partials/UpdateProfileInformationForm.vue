@@ -2,6 +2,9 @@
 import {ref} from 'vue';
 import {Link, router, useForm} from '@inertiajs/vue3';
 import FormSection from '@/Components/FormSection.vue';
+import {useToast} from "vue-toastification";
+
+const toast = useToast()
 
 const props = defineProps({
     user: Object,
@@ -26,7 +29,14 @@ const updateProfileInformation = () => {
     form.post(route('user-profile-information.update'), {
         errorBag: 'updateProfileInformation',
         preserveScroll: true,
-        onSuccess: () => clearPhotoFileInput(),
+        onError: (error) => {
+            for (const errorKey in error)
+                toast.error(error[errorKey])
+        },
+        onSuccess: () => {
+            toast.success('now, your information updated successfully!')
+            clearPhotoFileInput()
+        }
     });
 };
 

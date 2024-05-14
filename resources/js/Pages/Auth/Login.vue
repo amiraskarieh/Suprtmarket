@@ -2,6 +2,9 @@
 import {Head, Link, useForm} from '@inertiajs/vue3';
 import AuthenticationCard from '@/Components/AuthenticationCard.vue';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
+import {useToast} from "vue-toastification";
+
+const toast = useToast()
 
 const form = useForm({
     email: '',
@@ -15,6 +18,11 @@ const submit = () => {
         remember: form.remember ? 'on' : '',
     })).post(route('login'), {
         onFinish: () => form.reset('password'),
+        onError: (error) => {
+            for (const errorKey in error)
+                toast.error(error[errorKey])
+        },
+        onSuccess: () => toast.success('now, you are login!')
     });
 };
 
