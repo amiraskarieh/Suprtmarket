@@ -11,34 +11,7 @@ const themes = [
     "dark",
     "cupcake",
     "bumblebee",
-    "emerald",
-    "corporate",
-    "synthwave",
-    "retro",
-    "cyberpunk",
-    "valentine",
-    "halloween",
-    "garden",
-    "forest",
-    "aqua",
-    "lofi",
-    "pastel",
-    "fantasy",
-    "wireframe",
-    "black",
-    "luxury",
-    "dracula",
-    "cmyk",
-    "autumn",
-    "business",
-    "acid",
-    "lemonade",
-    "night",
-    "coffee",
-    "winter",
-    "dim",
-    "nord",
-    "sunset"
+    "emerald"
 ]
 
 defineProps({title: String});
@@ -124,7 +97,10 @@ const change_them = (theme) =>
 
 
                             <div class="dropdown dropdown-end">
-                                <div tabindex="0" role="button" class="btn btn-sm">Themes</div>
+                                <div tabindex="0" role="button" class="btn btn-sm">
+                                    Themes
+                                    <ChevronDownIcon class="ms-2 size-4"/>
+                                </div>
                                 <ul tabindex="0"
                                     class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
                                     <li v-for="theme in themes" :key="theme" class="my-2">

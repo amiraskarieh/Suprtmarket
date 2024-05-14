@@ -1,13 +1,7 @@
 <script setup>
-import { ref } from 'vue';
-import { Link, router, useForm } from '@inertiajs/vue3';
-import ActionMessage from '@/Components/ActionMessage.vue';
+import {ref} from 'vue';
+import {Link, router, useForm} from '@inertiajs/vue3';
 import FormSection from '@/Components/FormSection.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import SecondaryButton from '@/Components/SecondaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
 
 const props = defineProps({
     user: Object,
@@ -47,7 +41,7 @@ const selectNewPhoto = () => {
 const updatePhotoPreview = () => {
     const photo = photoInput.value.files[0];
 
-    if (! photo) return;
+    if (!photo) return;
 
     const reader = new FileReader();
 
@@ -87,8 +81,11 @@ const clearPhotoFileInput = () => {
 
         <template #form>
             <!-- Profile Photo -->
-            <div v-if="$page.props.jetstream.managesProfilePhotos" class="col-span-6 sm:col-span-4">
+            <label v-if="$page.props.jetstream.managesProfilePhotos" class="form-control w-full">
                 <!-- Profile Photo File Input -->
+                <span class="label">
+                    <span class="label-text text-primary-content">Photo</span>
+                </span>
                 <input
                     id="photo"
                     ref="photoInput"
@@ -97,64 +94,63 @@ const clearPhotoFileInput = () => {
                     @change="updatePhotoPreview"
                 >
 
-                <InputLabel for="photo" value="Photo" />
 
                 <!-- Current Profile Photo -->
-                <div v-show="! photoPreview" class="mt-2">
-                    <img :src="user.profile_photo_url" :alt="user.name" class="rounded-full h-20 w-20 object-cover">
+                <div v-show="!photoPreview" class="avatar">
+                    <div class="w-20 rounded-full">
+                        <img :src="user.profile_photo_url" :alt="user.name">
+                    </div>
                 </div>
 
                 <!-- New Profile Photo Preview -->
-                <div v-show="photoPreview" class="mt-2">
-                    <span
-                        class="block rounded-full w-20 h-20 bg-cover bg-no-repeat bg-center"
-                        :style="'background-image: url(\'' + photoPreview + '\');'"
-                    />
+                <div v-show="photoPreview" class="avatar">
+                    <span class="w-20 rounded-full" :style="'background-image: url(\'' + photoPreview + '\');'"/>
                 </div>
 
-                <SecondaryButton class="mt-2 me-2" type="button" @click.prevent="selectNewPhoto">
-                    Select A New Photo
-                </SecondaryButton>
+                <div class="flex  gap-4 flex-row-reverse">
+                    <button type="button" class="btn btn-sm btn-secondary mt-2 w-52" @click.prevent="selectNewPhoto">
+                        Select A New Photo
+                    </button>
 
-                <SecondaryButton
-                    v-if="user.profile_photo_path"
-                    type="button"
-                    class="mt-2"
-                    @click.prevent="deletePhoto"
-                >
-                    Remove Photo
-                </SecondaryButton>
-
-                <InputError :message="form.errors.photo" class="mt-2" />
-            </div>
+                    <button
+                        v-if="!user.profile_photo_path"
+                        type="button"
+                        class="btn btn-sm btn-error mt-2 w-52"
+                        @click.prevent="deletePhoto"
+                    >
+                        Remove Photo
+                    </button>
+                </div>
+            </label>
 
             <!-- Name -->
-            <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="name" value="Name" />
-                <TextInput
+            <label class="form-control w-full">
+                <span class="label">
+                    <span class="label-text text-primary-content">Name</span>
+                </span>
+                <input
                     id="name"
                     v-model="form.name"
                     type="text"
-                    class="mt-1 block w-full"
+                    class="input input-bordered w-full text-base-content"
                     required
                     autocomplete="name"
-                />
-                <InputError :message="form.errors.name" class="mt-2" />
-            </div>
+                    placeholder="Name"/>
+            </label>
 
             <!-- Email -->
-            <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="email" value="Email" />
-                <TextInput
+            <label class="form-control w-full">
+                <span class="label">
+                    <span class="label-text text-primary-content">Email</span>
+                </span>
+                <input
                     id="email"
                     v-model="form.email"
                     type="email"
-                    class="mt-1 block w-full"
+                    class="input input-bordered w-full text-base-content"
                     required
-                    autocomplete="username"
-                />
-                <InputError :message="form.errors.email" class="mt-2" />
-
+                    autocomplete="email"
+                    placeholder="Email"/>
                 <div v-if="$page.props.jetstream.hasEmailVerification && user.email_verified_at === null">
                     <p class="text-sm mt-2">
                         Your email address is unverified.
@@ -174,17 +170,14 @@ const clearPhotoFileInput = () => {
                         A new verification link has been sent to your email address.
                     </div>
                 </div>
-            </div>
+            </label>
         </template>
 
         <template #actions>
-            <ActionMessage :on="form.recentlySuccessful" class="me-3">
-                Saved.
-            </ActionMessage>
-
-            <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+            <button type="submit" class="btn btn-sm btn-secondary" :disabled="form.processing">
+                <span v-if="form.processing" class="loading loading-infinity"></span>
                 Save
-            </PrimaryButton>
+            </button>
         </template>
     </FormSection>
 </template>

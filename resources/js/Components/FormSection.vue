@@ -1,38 +1,27 @@
 <script setup>
-import { computed, useSlots } from 'vue';
-import SectionTitle from './SectionTitle.vue';
-
 defineEmits(['submitted']);
-
-const hasActions = computed(() => !! useSlots().actions);
 </script>
 
 <template>
-    <div class="md:grid md:grid-cols-3 md:gap-6">
-        <SectionTitle>
-            <template #title>
-                <slot name="title" />
-            </template>
-            <template #description>
-                <slot name="description" />
-            </template>
-        </SectionTitle>
+    <div class="card lg:card-side glass">
+        <div class="card-body lg:basis-1/5">
+            <div class="card-title text-base-content">
+                <slot name="title"/>
+            </div>
+            <p>
+                <slot name="description"/>
+            </p>
+        </div>
+        <form class="card-body" @submit.prevent="$emit('submitted')">
+            <div class="card bg-primary text-primary-content">
+                <div class="card-body">
+                    <slot name="form"/>
 
-        <div class="mt-5 md:mt-0 md:col-span-2">
-            <form @submit.prevent="$emit('submitted')">
-                <div
-                    class="px-4 py-5 bg-white sm:p-6 shadow"
-                    :class="hasActions ? 'sm:rounded-tl-md sm:rounded-tr-md' : 'sm:rounded-md'"
-                >
-                    <div class="grid grid-cols-6 gap-6">
-                        <slot name="form" />
+                    <div class="card-actions justify-end">
+                        <slot name="actions"/>
                     </div>
                 </div>
-
-                <div v-if="hasActions" class="flex items-center justify-end px-4 py-3 bg-gray-50 text-end sm:px-6 shadow sm:rounded-bl-md sm:rounded-br-md">
-                    <slot name="actions" />
-                </div>
-            </form>
-        </div>
+            </div>
+        </form>
     </div>
 </template>

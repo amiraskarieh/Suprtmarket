@@ -1,12 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useForm } from '@inertiajs/vue3';
-import ActionMessage from '@/Components/ActionMessage.vue';
 import FormSection from '@/Components/FormSection.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
 
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
@@ -48,53 +43,57 @@ const updatePassword = () => {
         </template>
 
         <template #form>
-            <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="current_password" value="Current Password" />
-                <TextInput
+            <label class="form-control w-full">
+                <span class="label">
+                    <span class="label-text text-primary-content">Current Password</span>
+                </span>
+                <input
                     id="current_password"
-                    ref="currentPasswordInput"
                     v-model="form.current_password"
+                    ref="currentPasswordInput"
                     type="password"
-                    class="mt-1 block w-full"
-                    autocomplete="current-password"
-                />
-                <InputError :message="form.errors.current_password" class="mt-2" />
-            </div>
+                    class="input input-bordered w-full text-base-content"
+                    required
+                    autocomplete="password"
+                    placeholder="Current Password"/>
+            </label>
 
-            <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="password" value="New Password" />
-                <TextInput
-                    id="password"
-                    ref="passwordInput"
+            <label class="form-control w-full">
+                <span class="label">
+                    <span class="label-text text-primary-content">New Password</span>
+                </span>
+                <input
+                    id="current_password"
                     v-model="form.password"
+                    ref="passwordInput"
                     type="password"
-                    class="mt-1 block w-full"
+                    class="input input-bordered w-full text-base-content"
+                    required
                     autocomplete="new-password"
-                />
-                <InputError :message="form.errors.password" class="mt-2" />
-            </div>
+                    placeholder="New Password"/>
+            </label>
 
-            <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
-                <TextInput
-                    id="password_confirmation"
+            <label class="form-control w-full">
+                <span class="label">
+                    <span class="label-text text-primary-content">Confirm Password</span>
+                </span>
+                <input
+                    id="current_password"
                     v-model="form.password_confirmation"
+                    ref="passwordInput"
                     type="password"
-                    class="mt-1 block w-full"
+                    class="input input-bordered w-full text-base-content"
+                    required
                     autocomplete="new-password"
-                />
-                <InputError :message="form.errors.password_confirmation" class="mt-2" />
-            </div>
+                    placeholder="Confirm Password"/>
+            </label>
         </template>
 
         <template #actions>
-            <ActionMessage :on="form.recentlySuccessful" class="me-3">
-                Saved.
-            </ActionMessage>
-
-            <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+            <button type="submit" class="btn btn-sm btn-secondary" :disabled="form.processing">
+                <span v-if="form.processing" class="loading loading-infinity"></span>
                 Save
-            </PrimaryButton>
+            </button>
         </template>
     </FormSection>
 </template>
