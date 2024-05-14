@@ -67,14 +67,20 @@ const submit = () => {
 
 
             <div class="flex items-center justify-end gap-4">
-                <Link :href="route('password.request')" class="link link-hover">
-                    Forgot your password?
+                <Link as="button" :href="route('register')" class="btn btn-accent btn-sm">
+                    Crete account
                 </Link>
 
                 <button class="btn btn-sm btn-secondary" :disabled="form.processing">
                     <span v-if="form.processing" class="loading loading-infinity"></span>
                     Log in
                 </button>
+            </div>
+            <div class="form-control">
+                <Link :href="route('password.request')" class="link link-hover">
+                    Forgot your password?
+                </Link>
+
             </div>
         </form>
     </AuthenticationCard>

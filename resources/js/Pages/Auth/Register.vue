@@ -85,8 +85,8 @@ const submit = () => {
             </label>
 
             <div class="form-control w-full flex-row items-center justify-end gap-4 mt-3">
-                <Link :href="route('login')" class="link link-hover">
-                    Already registered?
+                <Link as="button" :href="route('login')" class="btn btn-accent btn-sm">
+                    Login
                 </Link>
 
                 <button class="btn btn-sm btn-secondary" :disabled="form.processing">
