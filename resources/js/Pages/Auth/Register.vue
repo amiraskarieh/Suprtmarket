@@ -85,11 +85,11 @@ const submit = () => {
             </label>
 
             <div class="form-control w-full flex-row items-center justify-end gap-4 mt-3">
-                <Link as="button" :href="route('login')" class="btn btn-accent btn-sm">
+                <Link :href="route('login')" class="btn btn-accent btn-sm">
                     Login
                 </Link>
 
-                <button class="btn btn-sm btn-secondary" :disabled="form.processing">
+                <button type="submit" class="btn btn-sm btn-secondary" :disabled="form.processing">
                     <span v-if="form.processing" class="loading loading-infinity"></span>
                     Register
                 </button>
