@@ -34,7 +34,7 @@ setTimeout(() => {
                 </div>
             </template>
             <template v-else>
-                <div v-for="product in products" :key="product.id" class="card border shadow-2xl image-full">
+                <div v-for="product in products" :key="product.id" class="card shadow-2xl image-full">
                     <figure><img :src="`https://picsum.photos/id/${product.id*3}/300/200`" :alt="product.name"/>
                     </figure>
                     <div class="card-body">
