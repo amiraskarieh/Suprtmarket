@@ -28,7 +28,7 @@ const change_them = (theme) =>
 
         <Banner/>
 
-        <div class="min-h-screen bg-base-100">
+        <div class="min-h-screen bg-gradient-to-br from-base-100 via-base-content/15 to-base-300">
             <nav class="bg-primary border-b border-base-content">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -96,15 +96,18 @@ const change_them = (theme) =>
                             </Link>
 
 
-                            <div class="dropdown dropdown-end">
+                            <div class="dropdown">
                                 <div tabindex="0" role="button" class="btn btn-sm">
-                                    Themes
+                                    Theme
                                     <ChevronDownIcon class="ms-2 size-4"/>
                                 </div>
-                                <ul tabindex="0"
-                                    class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                                    <li v-for="theme in themes" :key="theme" class="my-2">
-                                        <button class="btn" @click="change_them(theme)">{{ theme }}</button>
+                                <ul tabindex="0" class="dropdown-content z-50 p-2 shadow-2xl bg-base-200 rounded-box w-52">
+                                    <li v-for="theme in themes" :key="theme">
+                                        <button type="button" name="theme-dropdown"
+                                                class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+                                                @click="change_them(theme)">
+                                            {{ theme }}
+                                        </button>
                                     </li>
                                 </ul>
                             </div>
