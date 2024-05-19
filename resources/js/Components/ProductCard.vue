@@ -15,6 +15,16 @@ const add = () => {
 }
 
 const remove = () => store.remove_from_bag(props.product.id)
+
+const btn = () => {
+    if (!store.is_employee)
+        return add()
+    toast('update')
+}
+
+const del = () => {
+    toast("delete")
+}
 </script>
 
 <template>
@@ -37,14 +47,18 @@ const remove = () => store.remove_from_bag(props.product.id)
                         <span class="text-sm font-medium">{{ product.price }}$</span>
                     </p>
                 </div>
-                <button v-if="!store.is_id_in_bag(product.id)" @click="add" class="btn btn-primary btn-sm">
-                    Add to bag
+                <button v-if="!store.is_id_in_bag(product.id)" @click="btn" class="btn btn-primary btn-sm">
+                    <span v-if="store.is_employee">update</span>
+                    <span v-else>Add to bag</span>
                 </button>
                 <div v-else class="join">
                     <button class="btn btn-sm btn-primary join-item" @click="remove">-</button>
                     <button class="btn btn-sm btn-primary join-item">{{ store.get_count(product.id) }}</button>
                     <button class="btn btn-sm btn-primary join-item" @click="add">+</button>
                 </div>
+            </div>
+            <div class="card-actions">
+                <button v-if="store.is_employee" @click="del" class="btn btn-sm btn-error btn-block">delete</button>
             </div>
         </div>
     </div>

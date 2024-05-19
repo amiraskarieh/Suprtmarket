@@ -44,16 +44,22 @@ const bagCount = () => {
                         <div class="flex items-center">
                             <!-- Logo -->
                             <div class="avatar">
-                                <Link class="w-9 rounded-full" :href="route('dashboard')">
+                                <Link method="get" as="button" class="w-9 rounded-full" :href="route('home')">
                                     <ApplicationMark class="block"/>
                                 </Link>
                             </div>
 
                             <!-- Navigation Links -->
                             <div class="space-x-8 -my-px ms-10 flex text-primary-content">
-                                <NavLink v-if="$page.props.auth.user" :href="route('dashboard')"
+                                <NavLink method="get" as="button" v-if="$page.props.auth.user"
+                                         :href="route('dashboard')"
                                          :active="route().current('dashboard')">
                                     Dashboard
+                                </NavLink>
+                                <NavLink method="get" as="button" v-if="$page.props.auth.user"
+                                         :href="route('employee_page')"
+                                         :active="route().current('employee_page')">
+                                    Employee Page
                                 </NavLink>
                             </div>
                         </div>
@@ -83,15 +89,14 @@ const bagCount = () => {
                                     </button>
                                 </div>
                                 <div tabindex="0"
-                                     class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                                    <Link class="block px-4 py-2 hover:text-primary" :href="route('profile.show')">
+                                     class="dropdown-content z-50 menu p-2 shadow bg-base-100 rounded-box w-52">
+                                    <Link class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+                                          as="button" :href="route('profile.show')">
                                         Profile
                                     </Link>
 
-                                    <div class="border-t border-base-content"/>
-
-                                    <!-- Authentication -->
-                                    <Link class="block px-4 py-2 hover:text-primary" method="post"
+                                    <Link class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
+                                          method="post" as="button"
                                           :href="route('logout')">
                                         Log Out
                                     </Link>

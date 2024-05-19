@@ -27,5 +27,11 @@ export const useStore = defineStore('store', () => {
         return computed(() => bag.value[id])
     }
 
-    return {bag, add_to_bag, remove_from_bag, is_id_in_bag, get_count}
+    const is_employee = ref(true)
+
+    function set_employee(status) {
+        is_employee.value = status
+    }
+
+    return {bag, add_to_bag, remove_from_bag, is_id_in_bag, get_count, is_employee, set_employee}
 })
