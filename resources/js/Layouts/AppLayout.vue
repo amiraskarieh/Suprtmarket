@@ -3,7 +3,7 @@ import {Head, Link, router} from '@inertiajs/vue3';
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
 import NavLink from '@/Components/NavLink.vue';
-
+import {useStore} from "@/Store/my_store.js";
 import {ChevronDownIcon, ShoppingCartIcon} from '@heroicons/vue/24/outline'
 
 const themes = [
@@ -19,6 +19,14 @@ defineProps({title: String});
 const change_them = (theme) =>
     document.getElementsByTagName('html')[0].setAttribute("data-theme", theme);
 
+const store = useStore()
+const bagCount = () => {
+    let count = 0
+    for (const bagKey in store.bag) {
+        count += store.get_count(bagKey).value
+    }
+    return count
+}
 
 </script>
 
@@ -53,8 +61,8 @@ const change_them = (theme) =>
                         <div class="flex items-center gap-10">
 
                             <div class="indicator">
-                                <span class="indicator-item badge badge-secondary">3</span>
-                                <Link as="button" class="btn btn-sm" href="#">
+                                <span class="indicator-item badge badge-secondary">{{ bagCount() }}</span>
+                                <Link class="btn btn-sm" href="#">
                                     <ShoppingCartIcon class="size-4"/>
                                 </Link>
                             </div>
@@ -101,7 +109,8 @@ const change_them = (theme) =>
                                     Theme
                                     <ChevronDownIcon class="ms-2 size-4"/>
                                 </div>
-                                <ul tabindex="0" class="dropdown-content z-50 p-2 shadow-2xl bg-base-200 rounded-box w-52">
+                                <ul tabindex="0"
+                                    class="dropdown-content z-50 p-2 shadow-2xl bg-base-200 rounded-box w-52">
                                     <li v-for="theme in themes" :key="theme">
                                         <button type="button" name="theme-dropdown"
                                                 class="theme-controller btn btn-sm btn-block btn-ghost justify-start"
