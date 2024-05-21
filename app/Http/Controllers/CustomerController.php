@@ -6,6 +6,12 @@ use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
+    public function index()
+    {
+        $customers = Customer::all();
+        return response()->json($customers);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
