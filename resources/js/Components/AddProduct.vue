@@ -1,6 +1,7 @@
 <script setup>
 import {Link, useForm} from "@inertiajs/vue3";
 import {useToast} from "vue-toastification";
+import {watch} from "vue";
 
 const toast = useToast()
 
@@ -9,7 +10,11 @@ const props = defineProps([
     'production_date', 'expiration_date', 'is_perishable'
 ])
 
-const form = useForm({...props});
+let form = useForm({...props});
+
+watch(() => props, (value) => {
+    form = useForm(...value)
+})
 
 const suppliers = [{id: 1, name: 'test'}, {id: 2, name: 'testtfsdg'}]
 

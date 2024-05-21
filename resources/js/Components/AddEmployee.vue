@@ -1,12 +1,29 @@
 <script setup>
 import {useForm} from "@inertiajs/vue3";
 import {useToast} from "vue-toastification";
+import {watch, ref} from "vue";
 
 const toast = useToast()
 
-const props = defineProps(['name', 'address', 'phone', 'age', 'salary', 'employment_date', 'marital_status_id', 'job_type_id'])
+const props = defineProps(['id', 'name', 'address', 'phone', 'age', 'salary', 'employment_date', 'marital_status_id',
+    'job_type_id'])
 
-const form = useForm({...props});
+defineEmits(['cansel'])
+
+let form = useForm({...props});
+
+watch(() => props.name, (value) => {
+    console.log(value)
+    form.id = value.id
+    form.name = value.name
+    form.address = value.address
+    form.phone = value.phone
+    form.age = value.age
+    form.salary = value.salary
+    form.employment_date = value.employment_date
+    form.marital_status_id = value.marital_status_id
+    form.job_type_id = value.job_type_id
+})
 
 const submit = () => {
     if (!/^\d+$/.test(form.phone))
@@ -30,7 +47,11 @@ const job_type_ids = [{
 <template>
     <div class="card shadow-md glass">
         <form class="card-body" @submit.prevent="submit">
-            <h3 class="card-title justify-center">Add Employee</h3>
+            <h3 class="card-title justify-center">
+                <span v-if="!name">Add</span>
+                <span v-else>Update</span>
+                Employee
+            </h3>
 
             <label class="form-control w-full ">
                 <span class="label">
@@ -146,9 +167,14 @@ const job_type_ids = [{
             </label>
 
             <div class="flex items-center justify-end gap-4">
+                <button type="button" class="btn btn-sm btn-secondary" @click="$emit('cansel')" v-if="!!name">
+                    cansel
+                </button>
                 <button type="submit" class="btn btn-sm btn-primary" :disabled="form.processing">
                     <span v-if="form.processing" class="loading loading-infinity"></span>
-                    add product
+                    <span v-if="!name">add</span>
+                    <span v-else>update</span>
+                    product
                 </button>
             </div>
         </form>
