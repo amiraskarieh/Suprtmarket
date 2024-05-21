@@ -21,7 +21,7 @@ const submit = () => {
 </script>
 
 <template>
-    <div class="card shadow-xl glass">
+    <div class="card shadow-md glass">
         <form class="card-body" @submit.prevent="submit">
             <h3 class="card-title justify-center">Add Supplier</h3>
 
