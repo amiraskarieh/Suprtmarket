@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
@@ -9,7 +10,9 @@ class EmployeeController extends Controller
     public function index()
     {
         $employees = Employee::all();
-        return response()->json($employees);
+        return Inertia::render('Employees', [
+            'employees' => $employees,
+        ]);
     }
 
     public function store(Request $request)

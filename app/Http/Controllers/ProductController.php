@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -9,7 +10,9 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        return response()->json($products);
+        return Inertia::render('Products', [
+            'products' => $products,
+        ]); 
     }
 
     public function store(Request $request)
@@ -27,7 +30,6 @@ class ProductController extends Controller
             'is_perishable' => 'required|boolean',
         ]);
 
-        // Custom validation logic
         if ($validated['is_perishable'] && empty($validated['expiration_date'])) {
             throw ValidationException::withMessages([
                 'expiration_date' => 'The expiration date is required for perishable products.',

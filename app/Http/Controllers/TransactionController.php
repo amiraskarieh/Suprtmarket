@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
@@ -9,7 +10,9 @@ class TransactionController extends Controller
     public function index()
     {
         $transactions = Transaction::with(['customer', 'employee', 'products'])->get();
-        return response()->json($transactions);
+        return Inertia::render('Transactions', [
+            'transactions' => $transactions,
+        ]);
     }
 
     public function store(Request $request)
