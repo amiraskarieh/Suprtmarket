@@ -62,7 +62,7 @@ function del(id) {
             :name="select_for_update.name"
             :email="select_for_update.email"
             :phone="select_for_update.phone"
-            @cansel="()=>show_edit=false"
+            @cancel="()=>show_edit=false"
             @updated="get_suppliers"
         />
 

@@ -51,7 +51,7 @@ function updated() {
             <transition name="list" tag="div" mode="out-in" class="basis-1/4">
                 <AddProduct
                     v-if="show_edit"
-                    @cansel="()=>show_edit=false"
+                    @cancel="()=>show_edit=false"
                     @updated="updated"
                     @del="get_products"
                     :name="select_for_update.name"

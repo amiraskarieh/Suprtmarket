@@ -3,7 +3,7 @@ import {useStore} from "@/Store/my_store.js";
 import {useToast} from "vue-toastification";
 import {router} from "@inertiajs/vue3";
 
-const emit = defineEmits(['update', 'cansel', 'del'])
+const emit = defineEmits(['update', 'cancel', 'del'])
 const store = useStore()
 const toast = useToast()
 

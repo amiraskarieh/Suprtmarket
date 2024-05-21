@@ -71,7 +71,7 @@ function del(id) {
                      :employment_date="select_for_update.employment_date"
                      :marital_status_id="select_for_update.marital_status_id"
                      :job_type_id="select_for_update.job_type_id"
-                     @cansel="()=>show_edit=false"
+                     @cancel="()=>show_edit=false"
                      @updated="get_employees"
         />
 

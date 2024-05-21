@@ -7,7 +7,7 @@ const toast = useToast()
 const props = defineProps(['id', 'name', 'address', 'phone', 'age', 'salary', 'employment_date', 'marital_status_id',
     'job_type_id'])
 
-const emit = defineEmits(['cansel', 'updated'])
+const emit = defineEmits(['cancel', 'updated'])
 
 const form = useForm({...props});
 
@@ -169,8 +169,8 @@ const job_type_ids = [{
             </label>
 
             <div class="flex items-center justify-end gap-4">
-                <button type="button" class="btn btn-sm btn-secondary" @click="$emit('cansel')" v-if="!!name">
-                    cansel
+                <button type="button" class="btn btn-sm btn-secondary" @click="$emit('cancel')" v-if="!!name">
+                    cancel
                 </button>
                 <button type="submit" class="btn btn-sm btn-primary" :disabled="form.processing">
                     <span v-if="form.processing" class="loading loading-infinity"></span>

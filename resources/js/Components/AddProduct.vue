@@ -9,7 +9,7 @@ const props = defineProps([
     'name', 'description', 'available', 'discount', 'buy_price', 'sell_price', 'supplier', 'sell_number',
     'production_date', 'expiration_date', 'is_perishable'
 ])
-const emit = defineEmits(['cansel', 'updated'])
+const emit = defineEmits(['cancel', 'updated'])
 
 const form = useForm({...props});
 
@@ -188,8 +188,8 @@ const submit = () => {
             </label>
 
             <div class="flex items-center justify-end gap-4">
-                <button type="button" class="btn btn-sm btn-secondary" @click="$emit('cansel')" v-if="!!name">
-                    cansel
+                <button type="button" class="btn btn-sm btn-secondary" @click="$emit('cancel')" v-if="!!name">
+                    cancel
                 </button>
 
                 <button type="submit" class="btn btn-sm btn-primary" :disabled="form.processing">
