@@ -41,8 +41,7 @@ function update(id) {
     }
 }
 
-function
-del(id) {
+function del(id) {
     router.delete(route('supplier.delete', {id: id}), {
         onFinish: get_suppliers,
         onError: (error) => {

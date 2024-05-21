@@ -1,7 +1,9 @@
 <script setup>
 import {useStore} from "@/Store/my_store.js";
 import {useToast} from "vue-toastification";
+import {router} from "@inertiajs/vue3";
 
+const emit = defineEmits(['update', 'cansel', 'del'])
 const store = useStore()
 const toast = useToast()
 
@@ -19,11 +21,17 @@ const remove = () => store.remove_from_bag(props.product.id)
 const btn = () => {
     if (!store.is_employee)
         return add()
-    toast('update')
 }
 
 const del = () => {
-    toast("delete")
+    router.delete(route('product.delete', {id: props.product.id}), {
+        onFinish: () => emit('del'),
+        onError: (error) => {
+            for (const errorKey in error)
+                toast.error(error[errorKey])
+        },
+        onSuccess: () => toast.success('delete successful!')
+    })
 }
 </script>
 
@@ -47,9 +55,9 @@ const del = () => {
                         <span class="text-sm font-medium">{{ product.price }}$</span>
                     </p>
                 </div>
-                <button v-if="!store.is_id_in_bag(product.id)" @click="btn" class="btn btn-primary btn-sm">
-                    <span v-if="store.is_employee">update</span>
-                    <span v-else>Add to bag</span>
+                <button v-if="!store.is_id_in_bag(product.id)" class="btn btn-primary btn-sm">
+                    <span v-if="store.is_employee" @click="$emit('update',product)">update</span>
+                    <span v-else @click="btn">Add to bag</span>
                 </button>
                 <div v-else class="join">
                     <button class="btn btn-sm btn-primary join-item" @click="remove">-</button>
