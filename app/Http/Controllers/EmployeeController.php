@@ -6,6 +6,12 @@ use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
+    public function index()
+    {
+        $employees = Employee::all();
+        return response()->json($employees);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([

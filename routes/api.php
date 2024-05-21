@@ -44,3 +44,8 @@ Route::post('/transactions', [TransactionController::class, 'store'])->name('tra
 Route::delete('/transactions/{id}', [TransactionController::class, 'destroy'])->name('transaction.delete');
 
 Route::post('suppliers/{supplier}/supply', [SupplierController::class, 'supplyProducts'])->name('supplier.suppliyProducts');
+
+Route::get('products', [ProductController::class, 'index'])->name('products.get');
+Route::get('employees', [EmployeeController::class, 'index'])->name('employees.get');
+Route::get('transactions', [TransactionController::class, 'index'])->name('transactions.get');
+Route::get('customers', [CustomerController::class, 'index'])->name('customers.get');
