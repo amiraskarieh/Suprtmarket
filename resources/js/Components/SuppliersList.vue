@@ -4,7 +4,6 @@ import {PencilSquareIcon, TrashIcon, EyeIcon} from "@heroicons/vue/24/outline";
 import AddSupplier from "@/Components/AddSupplier.vue";
 import {router} from '@inertiajs/vue3'
 import {useToast} from "vue-toastification";
-import AddEmployee from "@/Components/AddEmployee.vue";
 
 const toast = useToast()
 
@@ -43,7 +42,7 @@ function update(id) {
 
 function
 del(id) {
-    router.delete(route('suppliers.delete', {id: id}), {
+    router.delete(route('supplier.delete', {id: id}), {
         onFinish: get_suppliers,
         onError: (error) => {
             for (const errorKey in error)
