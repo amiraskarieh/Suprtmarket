@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -9,7 +10,9 @@ class CustomerController extends Controller
     public function index()
     {
         $customers = Customer::all();
-        return response()->json($customers);
+        return Inertia::render('Customers', [
+            'customers' => $customers,
+        ]);
     }
 
     public function store(Request $request)
