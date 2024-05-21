@@ -4,16 +4,9 @@ import {useToast} from "vue-toastification";
 
 const toast = useToast()
 
-const form = useForm({
-    name: '',
-    address: '',
-    phone: '',
-    age: '',
-    salary: '',
-    employment_date: '',
-    marital_status_id: '',
-    job_type_id: ''
-})
+const props = defineProps(['name', 'address', 'phone', 'age', 'salary', 'employment_date', 'marital_status_id', 'job_type_id'])
+
+const form = useForm({...props});
 
 const submit = () => {
     if (!/^\d+$/.test(form.phone))
@@ -127,7 +120,7 @@ const job_type_ids = [{
                     type="text"
                     class="select select-bordered w-full select-primary"
                     required>
-                    <option disabled selected value="">select marital status</option>
+                    <option disabled selected :value="undefined">select marital status</option>
                     <option v-for="marital_status_id in marital_status_ids" :key="marital_status_id.id"
                             :value="marital_status_id.id">
                         {{ marital_status_id.name }}
@@ -145,7 +138,7 @@ const job_type_ids = [{
                     type="text"
                     class="select select-bordered w-full select-primary"
                     required>
-                    <option disabled selected value="">select job type</option>
+                    <option disabled selected :value="undefined">select job type</option>
                     <option v-for="job_type_id in job_type_ids" :key="job_type_id.id" :value="job_type_id.id">
                         {{ job_type_id.name }}
                     </option>

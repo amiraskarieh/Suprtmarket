@@ -4,21 +4,14 @@ import {useToast} from "vue-toastification";
 
 const toast = useToast()
 
-const form = useForm({
-    name: '',
-    description: '',
-    available: '0',
-    discount: '0',
-    buy_price: '0',
-    sell_price: '0',
-    supplier: '',
-    sell_number: 0,
-    production_date: '',
-    expiration_date: '',
-    is_perishable: false,
-});
+const props = defineProps([
+    'name', 'description', 'available', 'discount', 'buy_price', 'sell_price', 'supplier', 'sell_number',
+    'production_date', 'expiration_date', 'is_perishable'
+])
 
-const suppliers = [{id: 1, name: 'test'},{id: 2, name: 'testtfsdg'}]
+const form = useForm({...props});
+
+const suppliers = [{id: 1, name: 'test'}, {id: 2, name: 'testtfsdg'}]
 
 const submit = () => {
     if (!/^\d+$/.test(form.available))
@@ -42,6 +35,7 @@ const submit = () => {
         onSuccess: () => toast.success('the product added!')
     });
 }
+
 </script>
 
 <template>
@@ -161,7 +155,7 @@ const submit = () => {
                     type="text"
                     class="select select-bordered w-full select-primary"
                     required>
-                    <option disabled selected value="">select supplier</option>
+                    <option disabled selected :value="undefined">select supplier</option>
                     <option v-for="supplier in suppliers" :key="supplier.id" :value="supplier.id">
                         {{ supplier.name }}
                     </option>
