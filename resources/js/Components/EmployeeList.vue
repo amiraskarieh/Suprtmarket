@@ -1,6 +1,6 @@
 <script setup>
 import {ref} from "vue";
-import {PencilSquareIcon, TrashIcon, EyeIcon} from "@heroicons/vue/24/outline";
+import {PencilSquareIcon, TrashIcon} from "@heroicons/vue/24/outline";
 
 const suppliers = ref([])
 
@@ -18,7 +18,7 @@ function del(id) {
 
     <div class="card glass shadow-md">
         <div class="card-body px-0">
-            <h3 class="card-title justify-center">Suppliers List</h3>
+            <h3 class="card-title justify-center">Employee List</h3>
             <div class="flex flex-col">
                 <div v-for="supplier in suppliers" :key="supplier.id"
                      class="flex justify-between h-12 px-10 odd:bg-primary/10 items-center transition-all duration-150 hover:shadow-lg hover:text-xl group">
@@ -30,11 +30,6 @@ function del(id) {
                         <button>
                             <TrashIcon @click="del(supplier.id)"
                                        class="h-4 text-error transition-all duration-150 group-hover:h-6"/>
-                        </button>
-
-                        <button>
-                            <EyeIcon @click="del(supplier.id)"
-                                     class="h-4 textarea-success transition-all duration-150 group-hover:h-6"/>
                         </button>
                     </div>
                 </div>

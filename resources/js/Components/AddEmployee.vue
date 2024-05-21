@@ -1,53 +1,44 @@
 <script setup>
-import {Link, useForm} from "@inertiajs/vue3";
+import {useForm} from "@inertiajs/vue3";
 import {useToast} from "vue-toastification";
 
 const toast = useToast()
 
 const form = useForm({
     name: '',
-    description: '',
-    available: '0',
-    discount: '0',
-    buy_price: '0',
-    sell_price: '0',
-    supplier: '',
-    sell_number: 0,
-    production_date: '',
-    expiration_date: '',
-    is_perishable: false,
-});
-
-const suppliers = [{id: 1, name: 'test'},{id: 2, name: 'testtfsdg'}]
+    address: '',
+    phone: '',
+    age: '',
+    salary: '',
+    employment_date: '',
+    marital_status_id: '',
+    job_type_id: ''
+})
 
 const submit = () => {
-    if (!/^\d+$/.test(form.available))
-        toast.error('Incorrect count');
-    if (!/^\d+$/.test(form.discount))
-        toast.error('Incorrect discount');
-    if (!/^\d+$/.test(form.buy_price))
-        toast.error('Incorrect buy price');
-    if (!/^\d+$/.test(form.sell_price))
-        toast.error('Incorrect sell price');
-
-    form.transform(data => ({
-        ...data,
-        is_perishable: !!form.expiration_date,
-    })).post(route('product.create'), {
-        onFinish: () => form.reset(),
-        onError: (error) => {
-            for (const errorKey in error)
-                toast.error(error[errorKey])
-        },
-        onSuccess: () => toast.success('the product added!')
-    });
+    if (!/^\d+$/.test(form.phone))
+        toast.error('Incorrect phone');
+    if (!/^\d+$/.test(form.age))
+        toast.error('Incorrect age');
+    if (!/^\d+$/.test(form.salary))
+        toast.error('Incorrect salary');
 }
+
+const marital_status_ids = [{
+    id: 1, name: "aa"
+}]
+
+
+const job_type_ids = [{
+    id: 1, name: "aa"
+}]
 </script>
 
 <template>
     <div class="card shadow-md glass">
         <form class="card-body" @submit.prevent="submit">
-            <h3 class="card-title justify-center">Add product</h3>
+            <h3 class="card-title justify-center">Add Employee</h3>
+
             <label class="form-control w-full ">
                 <span class="label">
                     <span class="label-text">Name</span>
@@ -63,92 +54,67 @@ const submit = () => {
 
             <label class="form-control w-full ">
                 <span class="label">
-                    <span class="label-text">Description</span>
+                    <span class="label-text">Address</span>
                 </span>
                 <textarea
                     id="description"
-                    v-model="form.description"
+                    v-model="form.address"
                     type="txt"
                     class="textarea textarea-bordered w-full textarea-primary"
                     required
-                    placeholder="Description"/>
+                    placeholder="Address"/>
             </label>
 
             <label class="form-control w-full ">
                 <span class="label">
-                    <span class="label-text">Count</span>
+                    <span class="label-text">Phone</span>
                 </span>
                 <input
                     id="count"
-                    v-model="form.available"
+                    v-model="form.phone"
                     type="text"
                     class="input input-bordered w-full input-primary"
                     required
-                    placeholder="Count"/>
+                    placeholder="Phone"/>
             </label>
 
             <label class="form-control w-full ">
                 <span class="label">
-                    <span class="label-text">Discount</span>
+                    <span class="label-text">Age</span>
                 </span>
                 <input
-                    id="discount"
-                    v-model="form.discount"
+                    id="count"
+                    v-model="form.age"
                     type="text"
                     class="input input-bordered w-full input-primary"
                     required
-                    placeholder="Discount"/>
+                    placeholder="Age"/>
             </label>
 
             <label class="form-control w-full ">
                 <span class="label">
-                    <span class="label-text">Buy Price</span>
+                    <span class="label-text">Salary</span>
                 </span>
                 <input
-                    id="buy_price"
-                    v-model="form.buy_price"
+                    id="count"
+                    v-model="form.salary"
                     type="text"
                     class="input input-bordered w-full input-primary"
                     required
-                    placeholder="Buy Price"/>
+                    placeholder="Salary"/>
             </label>
 
             <label class="form-control w-full ">
                 <span class="label">
-                    <span class="label-text">Sell Price</span>
-                </span>
-                <input
-                    id="sell_price"
-                    v-model="form.sell_price"
-                    type="text"
-                    class="input input-bordered w-full input-primary"
-                    required
-                    placeholder="Sell Price"/>
-            </label>
-
-            <label class="form-control w-full ">
-                <span class="label">
-                    <span class="label-text">Production Date</span>
+                    <span class="label-text">Employment Date</span>
                 </span>
                 <input
                     id="sell_price"
-                    v-model="form.production_date"
+                    v-model="form.employment_date"
                     type="date"
                     class="input input-bordered w-full input-primary"
                     required
-                    placeholder="Production Date"/>
-            </label>
-
-            <label class="form-control w-full ">
-                <span class="label">
-                    <span class="label-text">Expiration Date</span>
-                </span>
-                <input
-                    id="sell_price"
-                    v-model="form.expiration_date"
-                    type="date"
-                    class="input input-bordered w-full input-primary"
-                    placeholder="Expiration Date"/>
+                    placeholder="Employment Date"/>
             </label>
 
             <label class="form-control w-full ">
@@ -157,13 +123,31 @@ const submit = () => {
                 </span>
                 <select
                     id="supplier"
-                    v-model="form.supplier"
+                    v-model="form.marital_status_id"
                     type="text"
                     class="select select-bordered w-full select-primary"
                     required>
-                    <option disabled selected value="">select supplier</option>
-                    <option v-for="supplier in suppliers" :key="supplier.id" :value="supplier.id">
-                        {{ supplier.name }}
+                    <option disabled selected value="">select marital status</option>
+                    <option v-for="marital_status_id in marital_status_ids" :key="marital_status_id.id"
+                            :value="marital_status_id.id">
+                        {{ marital_status_id.name }}
+                    </option>
+                </select>
+            </label>
+
+            <label class="form-control w-full ">
+                <span class="label">
+                    <span class="label-text">Supplier</span>
+                </span>
+                <select
+                    id="supplier"
+                    v-model="form.job_type_id"
+                    type="text"
+                    class="select select-bordered w-full select-primary"
+                    required>
+                    <option disabled selected value="">select job type</option>
+                    <option v-for="job_type_id in job_type_ids" :key="job_type_id.id" :value="job_type_id.id">
+                        {{ job_type_id.name }}
                     </option>
                 </select>
             </label>
@@ -177,3 +161,4 @@ const submit = () => {
         </form>
     </div>
 </template>
+
