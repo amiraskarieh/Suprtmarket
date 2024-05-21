@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 
 class SupplierController extends Controller
 {
+    public function index()
+    {
+        $suppliers = Supplier::all();
+        return Inertia::render('Suppliers/Index', [
+            'suppliers' => $suppliers,
+        ]);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -17,7 +25,7 @@ class SupplierController extends Controller
 
         $supplier = Supplier::create($validated);
 
-        return response()->json($supplier, 201);
+        return redirect()->route('suppliers.get');
     }
 
     public function update(Request $request, Supplier $supplier)
@@ -30,14 +38,14 @@ class SupplierController extends Controller
 
         $supplier->update($validated);
 
-        return response()->json($supplier, 200);
+        return redirect()->route('suppliers.get');
     }
 
     public function destroy(Supplier $supplier)
     {
         $supplier->delete();
 
-        return response()->json(null, 204);
+        return redirect()->route('suppliers.get');
     }
 
     public function supplyProducts(Request $request, Supplier $supplier)

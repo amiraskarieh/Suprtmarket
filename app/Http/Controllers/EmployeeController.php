@@ -30,7 +30,7 @@ class EmployeeController extends Controller
 
         $employee = Employee::create($validated);
 
-        return response()->json($employee, 201);
+        return redirect()->route('employees.get');
     }
 
     // Update an existing employee
@@ -50,7 +50,7 @@ class EmployeeController extends Controller
         $employee = Employee::findOrFail($id);
         $employee->update($validated);
 
-        return response()->json($employee, 200);
+        return redirect()->route('employees.get');
     }
 
     // Delete an employee
@@ -59,6 +59,6 @@ class EmployeeController extends Controller
         $employee = Employee::findOrFail($id);
         $employee->delete();
 
-        return response()->json(null, 204);
+        return redirect()->route('employees.get');
     }
 }

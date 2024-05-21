@@ -26,7 +26,7 @@ class CustomerController extends Controller
 
         $customer = Customer::create($validated);
 
-        return response()->json($customer, 201);
+        return redirect()->route('customers.get');
     }
 
     // Update an existing customer
@@ -42,7 +42,7 @@ class CustomerController extends Controller
         $customer = Customer::findOrFail($id);
         $customer->update($validated);
 
-        return response()->json($customer, 200);
+        return redirect()->route('customers.get');
     }
 
     // Delete a customer
@@ -51,6 +51,6 @@ class CustomerController extends Controller
         $customer = Customer::findOrFail($id);
         $customer->delete();
 
-        return response()->json(null, 204);
+        return redirect()->route('customers.get');
     }
 }

@@ -54,7 +54,7 @@ class TransactionController extends Controller
             $productModel->decrement('available', $product['quantity']);
         }
 
-        return response()->json($transaction->load('products'), 201);
+        return redirect()->route('transactions.get');
     }
 
    
@@ -64,6 +64,6 @@ class TransactionController extends Controller
         $transaction = Transaction::findOrFail($id);
         $transaction->delete();
 
-        return response()->json(null, 204);
+        return redirect()->route('transactions.get');
     }
 }

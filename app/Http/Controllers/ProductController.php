@@ -38,7 +38,7 @@ class ProductController extends Controller
 
         $product = Product::create($validated);
 
-        return response()->json($product, 201);
+        return redirect()->route('products.get');
     }
 
     // Update an existing product
@@ -67,7 +67,7 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $product->update($validated);
 
-        return response()->json($product, 200);
+        return redirect()->route('products.get');
     }
 
     // Delete a product
@@ -76,6 +76,6 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $product->delete();
 
-        return response()->json(null, 204);
+        return redirect()->route('products.get');
     }
 }
