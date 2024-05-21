@@ -9,16 +9,9 @@ const props = defineProps(['id', 'name', 'address', 'phone', 'age', 'salary', 'e
 
 const emit = defineEmits(['cansel', 'updated'])
 
-let form = useForm({...props});
+const form = useForm({...props});
 
 const submit = () => {
-    if (!/^\d+$/.test(form.phone))
-        toast.error('Incorrect phone');
-    if (!/^\d+$/.test(form.age))
-        toast.error('Incorrect age');
-    if (!/^\d+$/.test(form.salary))
-        toast.error('Incorrect salary');
-
     if (props.id) {
         form.put(route('employee.update', form.id), {
             onError: (error) => {

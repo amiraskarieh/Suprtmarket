@@ -1,7 +1,7 @@
 <script setup>
 import {Link, useForm} from "@inertiajs/vue3";
 import {useToast} from "vue-toastification";
-import {watch} from "vue";
+import {ref, watch} from "vue";
 
 const toast = useToast()
 
@@ -9,44 +9,64 @@ const props = defineProps([
     'name', 'description', 'available', 'discount', 'buy_price', 'sell_price', 'supplier', 'sell_number',
     'production_date', 'expiration_date', 'is_perishable'
 ])
+const emit = defineEmits(['cansel', 'updated'])
 
-let form = useForm({...props});
+const form = useForm({...props});
 
-watch(() => props, (value) => {
-    form = useForm(...value)
-})
-
-const suppliers = [{id: 1, name: 'test'}, {id: 2, name: 'testtfsdg'}]
-
-const submit = () => {
-    if (!/^\d+$/.test(form.available))
-        toast.error('Incorrect count');
-    if (!/^\d+$/.test(form.discount))
-        toast.error('Incorrect discount');
-    if (!/^\d+$/.test(form.buy_price))
-        toast.error('Incorrect buy price');
-    if (!/^\d+$/.test(form.sell_price))
-        toast.error('Incorrect sell price');
-
-    form.transform(data => ({
-        ...data,
-        is_perishable: !!form.expiration_date,
-    })).post(route('product.create'), {
-        onFinish: () => form.reset(),
-        onError: (error) => {
-            for (const errorKey in error)
-                toast.error(error[errorKey])
-        },
-        onSuccess: () => toast.success('the product added!')
-    });
+const suppliers = ref([])
+/*    router.get(route('suppliers.get'), {
+        onSuccess: (response) => {
+            console.log(response.props.suppliers)
+            suppliers.value = response.props.suppliers
+        }
+    })*/
+for (let i = 0; i < 10; i++) {
+    suppliers.value.push({
+        id: i,
+        name: i,
+        phone: i,
+        email: i
+    })
 }
 
+
+const submit = () => {
+    if (props.id) {
+        form.put(route('product.update', form.id), {
+            onError: (error) => {
+                for (const errorKey in error)
+                    toast.error(error[errorKey])
+            },
+            onSuccess: () => {
+                toast.success('update successful!')
+                emit('updated')
+            }
+        })
+    } else {
+        form.transform(data => ({
+            ...data,
+            is_perishable: !!form.expiration_date,
+        })).post(route('product.create'), {
+            onFinish: () => form.reset(),
+            onError: (error) => {
+                for (const errorKey in error)
+                    toast.error(error[errorKey])
+            },
+            onSuccess: () => toast.success('the product added!')
+        });
+    }
+}
 </script>
 
 <template>
     <div class="card shadow-md glass">
         <form class="card-body" @submit.prevent="submit">
-            <h3 class="card-title justify-center">Add product</h3>
+            <h3 class="card-title justify-center">
+                <span v-if="!name">Add</span>
+                <span v-else>Update</span>
+                product
+            </h3>
+
             <label class="form-control w-full ">
                 <span class="label">
                     <span class="label-text">Name</span>
@@ -168,8 +188,14 @@ const submit = () => {
             </label>
 
             <div class="flex items-center justify-end gap-4">
+                <button type="button" class="btn btn-sm btn-secondary" @click="$emit('cansel')" v-if="!!name">
+                    cansel
+                </button>
+
                 <button type="submit" class="btn btn-sm btn-primary" :disabled="form.processing">
                     <span v-if="form.processing" class="loading loading-infinity"></span>
+                    <span v-if="!name">add</span>
+                    <span v-else>update</span>
                     add product
                 </button>
             </div>

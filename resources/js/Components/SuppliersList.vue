@@ -12,17 +12,18 @@ onMounted(get_suppliers)
 const suppliers = ref([])
 
 function get_suppliers() {
+/*    router.get(route('suppliers.get'), {
+        onSuccess: (response) => {
+            console.log(response.props.suppliers)
+            suppliers.value = response.props.suppliers
+        }
+    })*/
     for (let i = 0; i < 10; i++) {
         suppliers.value.push({
             id: i,
             name: i,
-            address: i,
             phone: i,
-            age: i,
-            salary: i,
-            employment_date: i,
-            marital_status_id: i,
-            job_type_id: i
+            email: i
         })
     }
 }
@@ -60,13 +61,8 @@ del(id) {
             v-if="show_edit"
             :id="select_for_update.id"
             :name="select_for_update.name"
-            :address="select_for_update.address"
+            :email="select_for_update.email"
             :phone="select_for_update.phone"
-            :age="select_for_update.age"
-            :salary="select_for_update.salary"
-            :employment_date="select_for_update.employment_date"
-            :marital_status_id="select_for_update.marital_status_id"
-            :job_type_id="select_for_update.job_type_id"
             @cansel="()=>show_edit=false"
             @updated="get_suppliers"
         />

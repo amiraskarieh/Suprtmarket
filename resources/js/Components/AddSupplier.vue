@@ -5,23 +5,16 @@ import {watch} from "vue";
 
 const toast = useToast()
 
-const props = defineProps(['id', 'name', 'address', 'phone', 'age', 'salary', 'employment_date', 'marital_status_id',
-    'job_type_id'])
+const props = defineProps(['id', 'name', 'email', 'phone'])
 const emit = defineEmits(['cansel', 'updated'])
 
-let form = useForm({...props});
+const form = useForm({...props});
 
 watch(() => props, (value) => {
     form = useForm(...value)
 })
 
 const submit = () => {
-    if (!/^\d+$/.test(form.count))
-        toast.error('Incorrect count');
-    if (!/^\d+$/.test(form.discount))
-        toast.error('Incorrect discount');
-    if (!/^\d+$/.test(form.price))
-        toast.error('Incorrect price');
     if (props.id) {
         form.put(route('supplier.update', form.id), {
             onError: (error) => {
@@ -68,6 +61,34 @@ const submit = () => {
                     class="input input-bordered w-full input-primary"
                     required
                     placeholder="Name"/>
+            </label>
+
+            <label class="form-control w-full ">
+                <span class="label">
+                    <span class="label-text">Email</span>
+                </span>
+                <input
+                    id="email"
+                    v-model="form.email"
+                    type="email"
+                    class="input input-bordered w-full input-primary"
+                    required
+                    autofocus
+                    autocomplete="username"
+                    placeholder="Email"/>
+            </label>
+
+            <label class="form-control w-full ">
+                <span class="label">
+                    <span class="label-text">Phone</span>
+                </span>
+                <input
+                    id="count"
+                    v-model="form.phone"
+                    type="text"
+                    class="input input-bordered w-full input-primary"
+                    required
+                    placeholder="Phone"/>
             </label>
 
             <div class="flex items-center justify-end gap-4">

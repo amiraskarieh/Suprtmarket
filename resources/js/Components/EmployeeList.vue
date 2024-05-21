@@ -12,6 +12,12 @@ const employees = ref([])
 onMounted(get_employees)
 
 function get_employees() {
+    /*    router.get(route('employees.get'), {
+        onSuccess: (response) => {
+            console.log(response.props.employees)
+            employees.value = response.props.employees
+        }
+    })*/
     for (let i = 0; i < 10; i++) {
         employees.value.push({
             id: i,
