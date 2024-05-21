@@ -56,12 +56,9 @@ class SupplierController extends Controller
             'products.*.quantity' => 'required|integer|min:1',
         ]);
 
-        // Loop through supplied products
         foreach ($validated['products'] as $product) {
-            // Attach product to supplier with supplied quantity
             $supplier->products()->attach($product['product_id'], ['quantity' => $product['quantity']]);
             
-            // Update available quantity of the product
             $productModel = Product::findOrFail($product['product_id']);
             $productModel->increment('available', $product['quantity']);
         }

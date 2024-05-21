@@ -29,7 +29,6 @@ class CustomerController extends Controller
         return redirect()->route('customers.get');
     }
 
-    // Update an existing customer
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
@@ -45,7 +44,6 @@ class CustomerController extends Controller
         return redirect()->route('customers.get');
     }
 
-    // Delete a customer
     public function destroy($id)
     {
         $customer = Customer::findOrFail($id);

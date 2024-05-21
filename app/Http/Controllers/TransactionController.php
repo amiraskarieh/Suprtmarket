@@ -27,7 +27,6 @@ class TransactionController extends Controller
             'products.*.quantity' => 'required|integer|min:1',
         ]);
 
-        // Ensure the employee is of type cashier
         $employee = Employee::findOrFail($validated['employee_id']);
         if ($employee->job_type_id != 1) { // Assuming job_type_id 1 is for cashier
             throw ValidationException::withMessages([
@@ -41,7 +40,6 @@ class TransactionController extends Controller
         ]);
 
 
-        // Attach products to transaction
         foreach ($validated['products'] as $product) {
             $productModel = Product::findOrFail($product['product_id']);
             if ($productModel->available < $product['quantity']) {
@@ -50,7 +48,6 @@ class TransactionController extends Controller
 
             $transaction->products()->attach($product['product_id'], ['quantity' => $product['quantity']]);
             
-            // Update available quantity
             $productModel->decrement('available', $product['quantity']);
         }
 
@@ -58,7 +55,6 @@ class TransactionController extends Controller
     }
 
    
-       // Delete a transaction
     public function destroy($id)
     {
         $transaction = Transaction::findOrFail($id);

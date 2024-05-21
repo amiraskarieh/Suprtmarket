@@ -33,7 +33,6 @@ class EmployeeController extends Controller
         return redirect()->route('employees.get');
     }
 
-    // Update an existing employee
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
@@ -53,7 +52,6 @@ class EmployeeController extends Controller
         return redirect()->route('employees.get');
     }
 
-    // Delete an employee
     public function destroy($id)
     {
         $employee = Employee::findOrFail($id);

@@ -41,7 +41,6 @@ class ProductController extends Controller
         return redirect()->route('products.get');
     }
 
-    // Update an existing product
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
@@ -57,7 +56,6 @@ class ProductController extends Controller
             'is_perishable' => 'sometimes|required|boolean',
         ]);
 
-        // Custom validation logic
         if (isset($validated['is_perishable']) && $validated['is_perishable'] && empty($validated['expiration_date'])) {
             throw ValidationException::withMessages([
                 'expiration_date' => 'The expiration date is required for perishable products.',
@@ -70,7 +68,6 @@ class ProductController extends Controller
         return redirect()->route('products.get');
     }
 
-    // Delete a product
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
