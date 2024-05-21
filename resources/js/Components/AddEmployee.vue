@@ -1,7 +1,6 @@
 <script setup>
 import {useForm} from "@inertiajs/vue3";
 import {useToast} from "vue-toastification";
-import {route} from "ziggy-js";
 
 const toast = useToast()
 
