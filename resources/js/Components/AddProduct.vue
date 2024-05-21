@@ -7,21 +7,40 @@ const toast = useToast()
 const form = useForm({
     name: '',
     description: '',
-    count: '0',
+    available: '0',
     discount: '0',
-    price: '0',
-    supplier: ''
+    buy_price: '0',
+    sell_price: '0',
+    supplier: '',
+    sell_number: 0,
+    production_date: '',
+    expiration_date: '',
+    is_perishable: false,
 });
 
 const suppliers = [{id: 1, name: 'test'},{id: 2, name: 'testtfsdg'}]
 
 const submit = () => {
-    if (!/^\d+$/.test(form.count))
+    if (!/^\d+$/.test(form.available))
         toast.error('Incorrect count');
     if (!/^\d+$/.test(form.discount))
         toast.error('Incorrect discount');
-    if (!/^\d+$/.test(form.price))
-        toast.error('Incorrect price');
+    if (!/^\d+$/.test(form.buy_price))
+        toast.error('Incorrect buy price');
+    if (!/^\d+$/.test(form.sell_price))
+        toast.error('Incorrect sell price');
+
+    form.transform(data => ({
+        ...data,
+        is_perishable: !!form.expiration_date,
+    })).post(route('product.create'), {
+        onFinish: () => form.reset(),
+        onError: (error) => {
+            for (const errorKey in error)
+                toast.error(error[errorKey])
+        },
+        onSuccess: () => toast.success('the product added!')
+    });
 }
 </script>
 
@@ -61,7 +80,7 @@ const submit = () => {
                 </span>
                 <input
                     id="count"
-                    v-model="form.count"
+                    v-model="form.available"
                     type="text"
                     class="input input-bordered w-full input-primary"
                     required
@@ -83,15 +102,53 @@ const submit = () => {
 
             <label class="form-control w-full ">
                 <span class="label">
-                    <span class="label-text">Price</span>
+                    <span class="label-text">Buy Price</span>
                 </span>
                 <input
-                    id="price"
-                    v-model="form.price"
+                    id="buy_price"
+                    v-model="form.buy_price"
                     type="text"
                     class="input input-bordered w-full input-primary"
                     required
-                    placeholder="Price"/>
+                    placeholder="Buy Price"/>
+            </label>
+
+            <label class="form-control w-full ">
+                <span class="label">
+                    <span class="label-text">Sell Price</span>
+                </span>
+                <input
+                    id="sell_price"
+                    v-model="form.sell_price"
+                    type="text"
+                    class="input input-bordered w-full input-primary"
+                    required
+                    placeholder="Sell Price"/>
+            </label>
+
+            <label class="form-control w-full ">
+                <span class="label">
+                    <span class="label-text">Production Date</span>
+                </span>
+                <input
+                    id="sell_price"
+                    v-model="form.production_date"
+                    type="date"
+                    class="input input-bordered w-full input-primary"
+                    required
+                    placeholder="Production Date"/>
+            </label>
+
+            <label class="form-control w-full ">
+                <span class="label">
+                    <span class="label-text">Expiration Date</span>
+                </span>
+                <input
+                    id="sell_price"
+                    v-model="form.expiration_date"
+                    type="date"
+                    class="input input-bordered w-full input-primary"
+                    placeholder="Expiration Date"/>
             </label>
 
             <label class="form-control w-full ">

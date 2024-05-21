@@ -20,7 +20,7 @@ function del(id){
         <h3 class="card-title justify-center">Suppliers List</h3>
         <div class="card-body px-0">
             <div class="flex flex-col">
-                <div v-for="supplier in suppliers" :key="supplier.id" class="flex justify-between h-12 px-10 odd:bg-primary/10 items-center transition-all duration-150 hover:text-xl group">
+                <div v-for="supplier in suppliers" :key="supplier.id" class="flex justify-between h-12 px-10 odd:bg-primary/10 items-center transition-all duration-150 hover:z-10 hover:shadow-lg hover:text-xl group">
                     <p>{{ supplier.name }}</p>
                     <div class="flex gap-2">
                         <button>
