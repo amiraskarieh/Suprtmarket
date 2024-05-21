@@ -1,29 +1,16 @@
 <script setup>
 import {useForm} from "@inertiajs/vue3";
 import {useToast} from "vue-toastification";
-import {watch, ref} from "vue";
+import {route} from "ziggy-js";
 
 const toast = useToast()
 
 const props = defineProps(['id', 'name', 'address', 'phone', 'age', 'salary', 'employment_date', 'marital_status_id',
     'job_type_id'])
 
-defineEmits(['cansel'])
+const emit = defineEmits(['cansel', 'updated'])
 
 let form = useForm({...props});
-
-watch(() => props.name, (value) => {
-    console.log(value)
-    form.id = value.id
-    form.name = value.name
-    form.address = value.address
-    form.phone = value.phone
-    form.age = value.age
-    form.salary = value.salary
-    form.employment_date = value.employment_date
-    form.marital_status_id = value.marital_status_id
-    form.job_type_id = value.job_type_id
-})
 
 const submit = () => {
     if (!/^\d+$/.test(form.phone))
@@ -32,6 +19,29 @@ const submit = () => {
         toast.error('Incorrect age');
     if (!/^\d+$/.test(form.salary))
         toast.error('Incorrect salary');
+
+    if (props.id) {
+        form.put(route('employee.update', form.id), {
+            onError: (error) => {
+                for (const errorKey in error)
+                    toast.error(error[errorKey])
+            },
+            onSuccess: () => {
+                toast.success('update successful!')
+                emit('updated')
+            }
+        })
+    } else {
+        form.post(route('employee.create'), {
+            onError: (error) => {
+                for (const errorKey in error)
+                    toast.error(error[errorKey])
+            },
+            onSuccess: () => {
+                toast.success('create successful!')
+            }
+        })
+    }
 }
 
 const marital_status_ids = [{
