@@ -58,3 +58,4 @@ Route::post('job-types', [JobTypeController::class, 'store'])->name('job-type.cr
 Route::delete('job-types/{id}', [JobTypeController::class, 'destroy'])->name('job-type.delete');
 
 Route::get('users/without-polymorphism', [UserController::class, 'getUsersWithoutPolymorphism'])->name('users.withoutPolymorphism');
+Route::post('users/add-relation', [UserController::class, 'addRelation'])->name('users.addRelation');
