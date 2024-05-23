@@ -1,7 +1,6 @@
 <script setup>
 import {useToast} from "vue-toastification";
 import {useForm} from "@inertiajs/vue3";
-import {watch} from "vue";
 
 const toast = useToast()
 
@@ -9,10 +8,6 @@ const props = defineProps(['id', 'name', 'email', 'phone'])
 const emit = defineEmits(['cancel', 'updated'])
 
 const form = useForm({...props});
-
-watch(() => props, (value) => {
-    form = useForm(...value)
-})
 
 const submit = () => {
     if (props.id) {
@@ -99,7 +94,7 @@ const submit = () => {
                     <span v-if="form.processing" class="loading loading-infinity"></span>
                     <span v-if="!name">add</span>
                     <span v-else>update</span>
-                    product
+                    supplier
                 </button>
             </div>
         </form>

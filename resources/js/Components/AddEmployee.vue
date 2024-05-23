@@ -176,7 +176,7 @@ const job_type_ids = [{
                     <span v-if="form.processing" class="loading loading-infinity"></span>
                     <span v-if="!name">add</span>
                     <span v-else>update</span>
-                    product
+                    employee
                 </button>
             </div>
         </form>

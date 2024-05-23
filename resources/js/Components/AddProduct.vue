@@ -196,7 +196,7 @@ const submit = () => {
                     <span v-if="form.processing" class="loading loading-infinity"></span>
                     <span v-if="!name">add</span>
                     <span v-else>update</span>
-                    add product
+                    product
                 </button>
             </div>
         </form>
