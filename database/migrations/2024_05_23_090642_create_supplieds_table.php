@@ -24,6 +24,7 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
 
+            $table->bigInteger('count');
             $table->timestamps();
         });
     }
