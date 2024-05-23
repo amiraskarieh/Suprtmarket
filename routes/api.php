@@ -48,3 +48,11 @@ Route::delete('/employees/{id}', [EmployeeController::class, 'destroy'])->name('
 Route::get('transactions', [TransactionController::class, 'index'])->name('transactions.get');
 Route::post('/transactions', [TransactionController::class, 'store'])->name('transaction.create');
 Route::delete('/transactions/{id}', [TransactionController::class, 'destroy'])->name('transaction.delete');
+
+Route::get('marital-statuses', [MaritalStatusController::class, 'index'])->name('marital-statuses.get');
+Route::post('marital-statuses', [MaritalStatusController::class, 'store'])->name('marital-status.create');
+Route::delete('marital-statuses/{id}', [MaritalStatusController::class, 'destroy'])->name('marital-status.delete');
+
+Route::get('job-types', [JobTypeController::class, 'index'])->name('job-types.get');
+Route::post('job-types', [JobTypeController::class, 'store'])->name('job-type.create');
+Route::delete('job-types/{id}', [JobTypeController::class, 'destroy'])->name('job-type.delete');
