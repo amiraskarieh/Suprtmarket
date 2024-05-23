@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
+use App\Models\MaritalStatus;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 
@@ -42,8 +44,8 @@ class EmployeeController extends Controller
             'age' => 'sometimes|required|integer|min:0',
             'salary' => 'sometimes|required|numeric|min:0',
             'employment_date' => 'sometimes|required|date',
-            'marital_status_id' => 'sometimes|required|exists:marital_statuses,id',
-            'job_type_id' => 'sometimes|required|exists:job_types,id',
+            'marital_status_id' => 'required|exists:marital_statuses,id',
+            'job_type_id' => 'required|exists:job_types,id',
         ]);
 
         $employee = Employee::findOrFail($id);
