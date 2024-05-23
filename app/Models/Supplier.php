@@ -4,19 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
-class JobType extends Model
+class Supplier extends Model
 {
     use HasFactory;
 
+
     protected $fillable = [
         'name',
+        'email',
+        'phone',
     ];
 
-    public function employee(): BelongsTo
+
+    public function user(): MorphOne
     {
-        return $this->belongsTo(Employee::class);
+        return $this->morphOne(User::class, 'userable');
     }
 }
-
