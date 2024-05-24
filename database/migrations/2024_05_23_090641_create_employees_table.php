@@ -19,16 +19,8 @@ return new class extends Migration
             $table->bigInteger('salary');
             $table->date('employment_date');
             $table->text('address');
-            $table->foreignId('marital_status_id')
-                ->constrained()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-
-            $table->foreignId('job_type_id')
-                ->constrained()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
-
+            $table->text('marital_status');
+            $table->text('job_type');
             $table->timestamps();
         });
     }

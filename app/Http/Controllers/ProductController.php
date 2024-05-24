@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
     public function index()
     {
         $products = Product::all();
-        return Inertia::render('Products', [
-            'products' => $products,
-        ]); 
+        return response()->json($products);
     }
 
     public function store(Request $request)
@@ -20,52 +19,41 @@ class ProductController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'sell_number' => 'required|integer',
-            'buy_price' => 'required|numeric',
-            'available' => 'required|numeric',
-            'discount' => 'required|numeric',
-            'sell_price' => 'required|numeric',
-            'production_date' => 'required|date',
-            'expiration_date' => 'nullable|date',
-            'is_perishable' => 'required|boolean',
+            'sell_number' => 'required',
+            'buy_price' => 'required',
+            'discount' => 'required',
+            'sell_price' => 'required',
+            'production_date' => 'required',
+            'perishable_data' => 'nullable',
+            'is_perishable' => 'required',
+            'available' => 'required',
+            'supplier_id' => 'required',
         ]);
 
-        if ($validated['is_perishable'] && empty($validated['expiration_date'])) {
-            throw ValidationException::withMessages([
-                'expiration_date' => 'The expiration date is required for perishable products.',
-            ]);
-        }
+        Product::create($validated);
 
-        $product = Product::create($validated);
-
-        return redirect()->route('products.get');
+        return response()->json('{}',201);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request,Product $product)
     {
         $validated = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'description' => 'sometimes|required|string',
-            'sell_number' => 'sometimes|required|integer',
-            'buy_price' => 'sometimes|required|numeric',
-            'available' => 'sometimes|required|boolean',
-            'discount' => 'sometimes|required|numeric',
-            'sell_price' => 'sometimes|required|numeric',
-            'production_date' => 'sometimes|required|date',
-            'expiration_date' => 'nullable|date',
-            'is_perishable' => 'sometimes|required|boolean',
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'sell_number' => 'required',
+            'buy_price' => 'required',
+            'discount' => 'required',
+            'sell_price' => 'required',
+            'production_date' => 'required',
+            'perishable_data' => 'nullable',
+            'is_perishable' => 'required',
+            'available' => 'required',
+            'supplier_id' => 'required',
         ]);
 
-        if (isset($validated['is_perishable']) && $validated['is_perishable'] && empty($validated['expiration_date'])) {
-            throw ValidationException::withMessages([
-                'expiration_date' => 'The expiration date is required for perishable products.',
-            ]);
-        }
-
-        $product = Product::findOrFail($id);
         $product->update($validated);
 
-        return redirect()->route('products.get');
+        return $this->index();
     }
 
     public function destroy($id)
@@ -73,6 +61,6 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $product->delete();
 
-        return redirect()->route('products.get');
+        return $this->index();
     }
 }

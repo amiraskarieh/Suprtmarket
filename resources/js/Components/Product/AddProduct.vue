@@ -1,68 +1,65 @@
 <script setup>
 import {useForm} from "@inertiajs/vue3";
 import {useToast} from "vue-toastification";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 
 const toast = useToast()
 
 const props = defineProps([
-    'name', 'description', 'available', 'discount', 'buy_price', 'sell_price', 'supplier', 'sell_number',
-    'production_date', 'expiration_date', 'is_perishable'
+    'id','name', 'description', 'available', 'discount', 'buy_price', 'sell_price', 'supplier_id', 'sell_number',
+    'production_date', 'perishable_data', 'is_perishable'
 ])
-const emit = defineEmits(['cancel', 'updated'])
+const emit = defineEmits(['cancel', 'updated','created'])
 
 const form = useForm({...props});
 
 const suppliers = ref([])
-/*    router.get(route('suppliers.get'), {
-        onSuccess: (response) => {
-            console.log(response.props.suppliers)
-            suppliers.value = response.props.suppliers
-        }
-    })*/
-for (let i = 0; i < 10; i++) {
-    suppliers.value.push({
-        id: i,
-        name: i,
-        phone: i,
-        email: i
+
+async function get_supplier() {
+    axios.get(route('suppliers.index')).then((response) => {
+        suppliers.value = response.data
     })
 }
 
+onMounted(get_supplier)
 
 const submit = () => {
+    form.available = +form.sell_number
+    form.buy_price = +form.buy_price
+    form.discount = +form.discount
+    form.sell_price = +form.sell_price
+    form.sell_number = +form.sell_number
+    console.log(form.perishable_data)
+    if (form.perishable_data === undefined)
+        form.perishable_data = null
+    form.is_perishable = !!form.perishable_data
+
     if (props.id) {
-        form.put(route('product.update', form.id), {
-            onError: (error) => {
-                for (const errorKey in error)
-                    toast.error(error[errorKey])
-            },
-            onSuccess: () => {
-                toast.success('update successful!')
-                emit('updated')
-            }
-        })
+        axios.put(route('products.update', [form.id]), form.data())
+            .then(() => {
+                    toast.success('update successful!')
+                    form.reset()
+                    emit('updated')
+                }
+            )
     } else {
-        form.transform(data => ({
-            ...data,
-            is_perishable: !!form.expiration_date,
-        })).post(route('product.create'), {
-            onFinish: () => form.reset(),
-            onError: (error) => {
-                for (const errorKey in error)
-                    toast.error(error[errorKey])
-            },
-            onSuccess: () => toast.success('the product added!')
-        });
+        axios.post(route('products.store'), form.data())
+            .then(() => {
+                    toast.success('create successful!')
+                    form.reset()
+                    emit('created')
+                }
+            )
     }
 }
+
 </script>
 
 <template>
     <div class="card shadow-md glass">
         <form class="card-body" @submit.prevent="submit">
             <h3 class="card-title justify-center">
-                <span v-if="!name">Add</span>
+                <span v-if="!id">Add</span>
                 <span v-else>Update</span>
                 product
             </h3>
@@ -95,11 +92,11 @@ const submit = () => {
 
             <label class="form-control w-full ">
                 <span class="label">
-                    <span class="label-text">Count</span>
+                    <span class="label-text">sell number</span>
                 </span>
                 <input
-                    id="count"
-                    v-model="form.available"
+                    id="sell-number"
+                    v-model="form.sell_number"
                     type="text"
                     class="input input-bordered w-full input-primary"
                     required
@@ -164,7 +161,7 @@ const submit = () => {
                 </span>
                 <input
                     id="sell_price"
-                    v-model="form.expiration_date"
+                    v-model="form.perishable_data"
                     type="date"
                     class="input input-bordered w-full input-primary"
                     placeholder="Expiration Date"/>
@@ -176,7 +173,7 @@ const submit = () => {
                 </span>
                 <select
                     id="supplier"
-                    v-model="form.supplier"
+                    v-model="form.supplier_id"
                     type="text"
                     class="select select-bordered w-full select-primary"
                     required>
@@ -188,13 +185,13 @@ const submit = () => {
             </label>
 
             <div class="flex items-center justify-end gap-4">
-                <button type="button" class="btn btn-sm btn-secondary" @click="$emit('cancel')" v-if="!!name">
+                <button type="button" class="btn btn-sm btn-secondary" @click="$emit('cancel')" v-if="!!id">
                     cancel
                 </button>
 
                 <button type="submit" class="btn btn-sm btn-primary" :disabled="form.processing">
                     <span v-if="form.processing" class="loading loading-infinity"></span>
-                    <span v-if="!name">add</span>
+                    <span v-if="!id">add</span>
                     <span v-else>update</span>
                     product
                 </button>

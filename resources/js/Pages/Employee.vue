@@ -1,32 +1,48 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import AddProduct from "@/Components/AddProduct.vue";
-import AddSupplier from "@/Components/AddSupplier.vue";
-import SuppliersList from "@/Components/SuppliersList.vue";
-import AddEmployee from "@/Components/AddEmployee.vue";
-import EmployeeList from "@/Components/EmployeeList.vue";
+import {ref} from "vue";
+import EmployeeManage from "@/Components/Employee/EmployeeManage.vue";
+import SupplierManage from "@/Components/Supplier/SupplierManage.vue";
+import ProductManage from "@/Components/Product/ProductManage.vue";
+
+const comp = {'product': ProductManage, 'employee': EmployeeManage, 'supplier': SupplierManage}
+const current_comp = ref('product')
+
 </script>
 
 <template>
     <AppLayout title="Employee">
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="card bg-transparent grid grid-cols-3 gap-4">
-                    <div>
-                        <AddProduct class="transition-all duration-150 hover:z-10 hover:scale-105 hover:shadow-xl"/>
-                    </div>
-
-                    <div class="flex flex-col gap-6">
-                        <AddEmployee class="transition-all duration-150 hover:z-10 hover:scale-105 hover:shadow-xl"/>
-                        <EmployeeList class="transition-all duration-150 hover:z-10 hover:scale-105 hover:shadow-xl"/>
-                    </div>
-
-                    <div class="flex flex-col gap-6">
-                        <AddSupplier class="transition-all duration-150 hover:z-10 hover:scale-105 hover:shadow-xl"/>
-                        <SuppliersList class="transition-all duration-150 hover:z-10 hover:scale-105 hover:shadow-xl"/>
-                    </div>
-                </div>
-            </div>
+        <div role="tablist" class="tabs tabs-bordered tabs-lg pt-4">
+            <button v-for="(_,key) in comp"
+                    :key="key"
+                    role="tab"
+                    :class="{
+                        'tab ':current_comp!==key,
+                        'tab tab-active':current_comp===key
+                    }"
+                    @click="()=>current_comp=key">
+                {{ key }}s
+            </button>
         </div>
+        <transition tag="div" name="list" mode="out-in" class="pt-10">
+            <component :is="comp[current_comp]"/>
+        </transition>
     </AppLayout>
 </template>
+
+<style>
+.list-enter-active,
+.list-leave-active {
+    transition: all 0.5s;
+}
+
+.list-enter-from {
+    opacity: 0;
+    transform: translateX(50px);
+}
+
+.list-leave-to {
+    opacity: 0;
+    transform: translateX(-50px);
+}
+</style>

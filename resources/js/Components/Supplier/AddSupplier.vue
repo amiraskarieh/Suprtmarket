@@ -5,32 +5,36 @@ import {useForm} from "@inertiajs/vue3";
 const toast = useToast()
 
 const props = defineProps(['id', 'name', 'email', 'phone'])
-const emit = defineEmits(['cancel', 'updated'])
+const emit = defineEmits(['cancel', 'updated', 'created'])
 
 const form = useForm({...props});
 
 const submit = () => {
     if (props.id) {
-        form.put(route('supplier.update', form.id), {
-            onError: (error) => {
+        axios.put(route('suppliers.update', [form.id]), form.data())
+            .then(() => {
+                    toast.success('update successful!')
+                    form.reset()
+                    emit('updated')
+                }
+            ).catch((error) => {
                 for (const errorKey in error)
                     toast.error(error[errorKey])
-            },
-            onSuccess: () => {
-                toast.success('update successful!')
-                emit('updated')
             }
-        })
+        )
     } else {
-        form.post(route('supplier.create'), {
-            onError: (error) => {
+        console.log(form.data())
+        axios.post(route('suppliers.store'), form.data())
+            .then(() => {
+                    toast.success('create successful!')
+                    form.reset()
+                    emit('created')
+                }
+            ).catch((error) => {
                 for (const errorKey in error)
                     toast.error(error[errorKey])
-            },
-            onSuccess: () => {
-                toast.success('create successful!')
             }
-        })
+        )
     }
 }
 

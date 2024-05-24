@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
+use JetBrains\PhpStorm\NoReturn;
 
 class SupplierController extends Controller
 {
     public function index()
     {
         $suppliers = Supplier::all();
-        return Inertia::render('Suppliers/Index', [
-            'suppliers' => $suppliers,
-        ]);
+        return response()->json($suppliers);
     }
 
     public function store(Request $request)
@@ -23,9 +22,9 @@ class SupplierController extends Controller
             'phone' => 'required|string|max:20',
         ]);
 
-        $supplier = Supplier::create($validated);
+        Supplier::create($validated);
 
-        return redirect()->route('suppliers.get');
+        return response()->json('{}',201);
     }
 
     public function update(Request $request, Supplier $supplier)
@@ -38,14 +37,13 @@ class SupplierController extends Controller
 
         $supplier->update($validated);
 
-        return redirect()->route('suppliers.get');
+        return response()->json('{}',201);
     }
 
     public function destroy(Supplier $supplier)
     {
         $supplier->delete();
-
-        return redirect()->route('suppliers.get');
+        return response()->json('{}',201);
     }
 
     public function supplyProducts(Request $request, Supplier $supplier)
@@ -58,7 +56,7 @@ class SupplierController extends Controller
 
         foreach ($validated['products'] as $product) {
             $supplier->products()->attach($product['product_id'], ['quantity' => $product['quantity']]);
-            
+
             $productModel = Product::findOrFail($product['product_id']);
             $productModel->increment('available', $product['quantity']);
         }

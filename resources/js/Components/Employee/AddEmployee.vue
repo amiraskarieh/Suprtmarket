@@ -1,49 +1,64 @@
 <script setup>
 import {useForm} from "@inertiajs/vue3";
 import {useToast} from "vue-toastification";
+import {onMounted, ref} from "vue";
+import axios from "axios";
 
 const toast = useToast()
 
-const props = defineProps(['id', 'name', 'address', 'phone', 'age', 'salary', 'employment_date', 'marital_status_id',
-    'job_type_id'])
+const props = defineProps(['user_id', 'id', 'name', 'address', 'phone', 'age', 'salary', 'employment_date', 'marital_status',
+    'job_type'])
 
-const emit = defineEmits(['cancel', 'updated'])
+const emit = defineEmits(['cancel', 'updated', 'created'])
 
 const form = useForm({...props});
 
 const submit = () => {
+    form.age = +form.age
+    form.salary = +form.salary
     if (props.id) {
-        form.put(route('employee.update', form.id), {
-            onError: (error) => {
-                for (const errorKey in error)
-                    toast.error(error[errorKey])
-            },
-            onSuccess: () => {
-                toast.success('update successful!')
-                emit('updated')
-            }
-        })
+        axios.put(route('employees.update', [form.id]), form.data())
+            .then(() => {
+                    toast.success('update successful!')
+                    emit('updated')
+                }
+            )
     } else {
-        form.post(route('employee.create'), {
-            onError: (error) => {
-                for (const errorKey in error)
-                    toast.error(error[errorKey])
-            },
-            onSuccess: () => {
-                toast.success('create successful!')
-            }
+        axios.post(route('employees.store'), form.data())
+            .then((r) => {
+                    const id = r.data
+                    axios.post(route('users.addRelation'), {
+                        user_id: form.user_id,
+                        type: 'employee',
+                        related_id: id
+                    }).then(() => {
+                        toast.success('create successful!')
+                        form.reset()
+                        get_users_without_polymorphism()
+                        emit('created')
+                    }).catch(r => {
+                        log.error(r)
+                    })
+                }
+            ).catch(r => {
+            toast.error(r.response.data.message)
         })
     }
 }
 
-const marital_status_ids = [{
-    id: 1, name: "aa"
-}]
+const users = ref([])
 
+function get_users_without_polymorphism() {
+    axios.get(route('users.withoutPolymorphism'))
+        .then(r => users.value = r.data)
+}
 
-const job_type_ids = [{
-    id: 1, name: "aa"
-}]
+onMounted(get_users_without_polymorphism)
+
+const marital_statuses = ref(['married', 'single'])
+
+const job_types = ref(['manger', 'cashier', 'seller'])
+
 </script>
 
 <template>
@@ -54,6 +69,23 @@ const job_type_ids = [{
                 <span v-else>Update</span>
                 Employee
             </h3>
+
+            <label v-if="!props.id" class="form-control w-full ">
+                <span class="label">
+                    <span class="label-text">User</span>
+                </span>
+                <select
+                    id="supplier"
+                    v-model="form.user_id"
+                    type="text"
+                    class="select select-bordered w-full select-primary"
+                    required>
+                    <option disabled selected>select user</option>
+                    <option v-for="user in users" :key="user.id" :value="user.id">
+                        {{ user.name }}-{{ user.email }}
+                    </option>
+                </select>
+            </label>
 
             <label class="form-control w-full ">
                 <span class="label">
@@ -135,35 +167,35 @@ const job_type_ids = [{
 
             <label class="form-control w-full ">
                 <span class="label">
-                    <span class="label-text">Supplier</span>
+                    <span class="label-text">marital status</span>
                 </span>
                 <select
                     id="supplier"
-                    v-model="form.marital_status_id"
+                    v-model="form.marital_status"
                     type="text"
                     class="select select-bordered w-full select-primary"
                     required>
-                    <option disabled selected :value="undefined">select marital status</option>
-                    <option v-for="marital_status_id in marital_status_ids" :key="marital_status_id.id"
-                            :value="marital_status_id.id">
-                        {{ marital_status_id.name }}
+                    <option disabled selected>select marital status</option>
+                    <option v-for="marital_status in marital_statuses" :key="marital_status"
+                            :value="marital_status">
+                        {{ marital_status }}
                     </option>
                 </select>
             </label>
 
             <label class="form-control w-full ">
                 <span class="label">
-                    <span class="label-text">Supplier</span>
+                    <span class="label-text">job type</span>
                 </span>
                 <select
                     id="supplier"
-                    v-model="form.job_type_id"
+                    v-model="form.job_type"
                     type="text"
                     class="select select-bordered w-full select-primary"
                     required>
-                    <option disabled selected :value="undefined">select job type</option>
-                    <option v-for="job_type_id in job_type_ids" :key="job_type_id.id" :value="job_type_id.id">
-                        {{ job_type_id.name }}
+                    <option disabled selected>select job type</option>
+                    <option v-for="job_type in job_types" :key="job_type" :value="job_type">
+                        {{ job_type }}
                     </option>
                 </select>
             </label>

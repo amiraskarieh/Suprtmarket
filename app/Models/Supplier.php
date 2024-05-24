@@ -24,8 +24,8 @@ class Supplier extends Model
         return $this->morphOne(User::class, 'userable');
     }
 
-    public function suplieds(): HasMany
+    public function products(): HasMany
     {
-        return $this->hasMany(Supplied::class);
+        return $this->hasMany(Product::class);
     }
 }

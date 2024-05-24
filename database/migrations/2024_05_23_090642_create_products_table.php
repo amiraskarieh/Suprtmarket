@@ -23,6 +23,11 @@ return new class extends Migration
             $table->date('perishable_data')->nullable();
             $table->bigInteger('sell_number');
             $table->bigInteger('buy_price');
+            $table->foreignId('supplier_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
+
             $table->timestamps();
         });
     }
