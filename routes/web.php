@@ -29,6 +29,6 @@ Route::middleware([
     })->name('dashboard');
 });
 
-Route::get('/employee_page', function () {
+Route::get('/management', function () {
     return Inertia::render('Employee');
-})->name('employee_page');
+})->name('management');

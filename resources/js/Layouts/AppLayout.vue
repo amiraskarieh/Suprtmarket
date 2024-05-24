@@ -57,9 +57,9 @@ const bagCount = () => {
                                     Dashboard
                                 </NavLink>
                                 <NavLink method="get" as="button" v-if="store.is_employee"
-                                         :href="route('employee_page')"
-                                         :active="route().current('employee_page')">
-                                    Employee Page
+                                         :href="route('management')"
+                                         :active="route().current('management')">
+                                    Management
                                 </NavLink>
                             </div>
                         </div>
