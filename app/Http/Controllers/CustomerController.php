@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 
@@ -26,7 +27,8 @@ class CustomerController extends Controller
 
         $customer = Customer::create($validated);
 
-        return redirect()->route('customers.get');
+        return response()->json($customer->id, 201);
+
     }
 
     public function update(Request $request, $id)

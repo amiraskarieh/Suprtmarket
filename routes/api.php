@@ -27,9 +27,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::resource('products', ProductController::class);
-Route::resource('customers', CustomerController::class);
 Route::resource('suppliers', SupplierController::class);
 Route::resource('employees', EmployeeController::class);
+Route::resource('customers', CustomerController::class);
 Route::resource('transactions', TransactionController::class);
 
 Route::get('users/without-polymorphism', [UserController::class, 'getUsersWithoutPolymorphism'])->name('users.withoutPolymorphism');

@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
+use App\Models\Product;
+use App\Models\ProductTransactions;
+use App\Models\Transaction;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 
@@ -24,37 +29,37 @@ class TransactionController extends Controller
             'employee_id' => 'required|exists:employees,id',
             'products' => 'required|array',
             'products.*.product_id' => 'required|exists:products,id',
-            'products.*.quantity' => 'required|integer|min:1',
+            'products.*.count' => 'required|integer|min:1',
         ]);
 
-        $employee = Employee::findOrFail($validated['employee_id']);
-        if ($employee->job_type_id != 1) { // Assuming job_type_id 1 is for cashier
+        $employee = Employee::findOrFail($request->employee_id);
+        if ($employee->job_type != 'cashier') { // Assuming job_type_id 1 is for cashier
             throw ValidationException::withMessages([
                 'employee_id' => 'The employee must be a cashier.'
             ]);
         }
 
-        $transaction = Transaction::create([
-            'customer_id' => $validated['customer_id'],
-            'employee_id' => $validated['employee_id'],
-        ]);
+        $transaction = Transaction::create($validated);
 
 
         foreach ($validated['products'] as $product) {
             $productModel = Product::findOrFail($product['product_id']);
-            if ($productModel->available < $product['quantity']) {
-                return response()->json(['error' => 'Not enough quantity available for ' . $productModel->name], 400);
+            if ($productModel->available < $product['count']) {
+                return response()->json(['error' => 'Not enough count available for ' . $productModel->name], 400);
             }
+            ProductTransactions::create([
+                'transaction_id' => $transaction->id,
+                'product_id' => $productModel->id,
+                'count' => $product['count'],
+            ]);
 
-            $transaction->products()->attach($product['product_id'], ['quantity' => $product['quantity']]);
-            
-            $productModel->decrement('available', $product['quantity']);
+            $productModel->decrement('available', $product['count']);
         }
 
-        return redirect()->route('transactions.get');
+        return response()->json(['message' => 'Products supplied successfully'], 201);
     }
 
-   
+
     public function destroy($id)
     {
         $transaction = Transaction::findOrFail($id);

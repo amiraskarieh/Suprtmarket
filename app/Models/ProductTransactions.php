@@ -10,7 +10,7 @@ class ProductTransactions extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['count'];
+    protected $fillable = ['product_id','transaction_id','count'];
 
     public function product(): BelongsTo
     {

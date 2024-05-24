@@ -51,14 +51,14 @@ class SupplierController extends Controller
         $validated = $request->validate([
             'products' => 'required|array',
             'products.*.product_id' => 'required|exists:products,id',
-            'products.*.quantity' => 'required|integer|min:1',
+            'products.*.count' => 'required|integer|min:1',
         ]);
 
         foreach ($validated['products'] as $product) {
-            $supplier->products()->attach($product['product_id'], ['quantity' => $product['quantity']]);
+            $supplier->products()->attach($product['product_id'], ['count' => $product['count']]);
 
             $productModel = Product::findOrFail($product['product_id']);
-            $productModel->increment('available', $product['quantity']);
+            $productModel->increment('available', $product['count']);
         }
 
         return response()->json(['message' => 'Products supplied successfully'], 201);

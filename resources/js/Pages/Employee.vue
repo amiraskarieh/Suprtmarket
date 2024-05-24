@@ -1,13 +1,21 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import EmployeeManage from "@/Components/Employee/EmployeeManage.vue";
 import SupplierManage from "@/Components/Supplier/SupplierManage.vue";
 import ProductManage from "@/Components/Product/ProductManage.vue";
+import {useStore} from "@/Store/my_store.js";
+import {router} from "@inertiajs/vue3";
 
 const comp = {'product': ProductManage, 'employee': EmployeeManage, 'supplier': SupplierManage}
 const current_comp = ref('product')
 
+const store = useStore()
+onMounted(()=>{
+    if (!store.is_employee) {
+        router.replace('/')
+    }
+})
 </script>
 
 <template>

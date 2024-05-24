@@ -56,7 +56,7 @@ const bagCount = () => {
                                          :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
-                                <NavLink method="get" as="button" v-if="$page.props.auth.user"
+                                <NavLink method="get" as="button" v-if="store.is_employee"
                                          :href="route('employee_page')"
                                          :active="route().current('employee_page')">
                                     Employee Page
@@ -68,7 +68,7 @@ const bagCount = () => {
 
                             <div class="indicator">
                                 <span class="indicator-item badge badge-secondary">{{ bagCount() }}</span>
-                                <Link class="btn btn-sm" href="#">
+                                <Link class="btn btn-sm" :href="route('dashboard')">
                                     <ShoppingCartIcon class="size-4"/>
                                 </Link>
                             </div>

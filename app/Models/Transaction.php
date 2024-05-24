@@ -11,7 +11,9 @@ class Transaction extends Model
 {
     use HasFactory;
 
-    protected $fill = [
+    protected $fillable = [
+        'customer_id',
+        'employee_id',
         'price',
         'date'
     ];
@@ -26,7 +28,7 @@ class Transaction extends Model
         return $this->hasOne(Employee::class);
     }
 
-    public function product_transactions(): HasMany
+    public function products(): HasMany
     {
         return $this->hasMany(ProductTransactions::class);
     }
