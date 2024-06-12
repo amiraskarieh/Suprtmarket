@@ -63,4 +63,13 @@ class SupplierController extends Controller
 
         return response()->json(['message' => 'Products supplied successfully'], 201);
     }
+
+    public function getSupplierProducts($supplier_id)
+    {
+        $supplier = Supplier::findOrFail($supplier_id);
+
+        $products = Product::where('supplier_id', $supplier_id)->get();
+
+        return response()->json($products);
+    }
 }

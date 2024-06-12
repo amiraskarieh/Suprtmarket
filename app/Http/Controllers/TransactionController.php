@@ -67,4 +67,32 @@ class TransactionController extends Controller
 
         return redirect()->route('transactions.get');
     }
+
+    public function getCustomerProducts($customer_id)
+    {
+        $customer = Customer::findOrFail($customer_id);
+
+        $products = Transaction::where('customer_id', $customer_id)
+            ->with('products')
+            ->get()
+            ->pluck('products')
+            ->flatten()
+            ->unique('id');
+
+        return response()->json($products);
+    }
+
+    public function getEmployeeProducts($employee_id)
+    {
+        $employee = Employee::findOrFail($employee_id);
+
+        $products = Transaction::where('employee_id', $employee_id)
+            ->with('products')
+            ->get()
+            ->pluck('products')
+            ->flatten()
+            ->unique('id');
+
+        return response()->json($products);
+    }
 }
