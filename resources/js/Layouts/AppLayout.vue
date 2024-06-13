@@ -68,7 +68,7 @@ const bagCount = () => {
 
                             <div class="indicator">
                                 <span class="indicator-item badge badge-secondary">{{ bagCount() }}</span>
-                                <Link class="btn btn-sm" :href="route('dashboard')">
+                                <Link class="btn btn-sm" :href="route('buy')">
                                     <ShoppingCartIcon class="size-4"/>
                                 </Link>
                             </div>

@@ -27,6 +27,9 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+    Route::get('/buy', function () {
+        return Inertia::render('BuyPage');
+    })->name('buy');
 });
 
 Route::get('/management', function () {

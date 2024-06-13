@@ -16,7 +16,7 @@ store.set_employee(props.auth.user.userable_type === 'App\\Models\\Employee')
     <AppLayout title="Dashboard">
         <div class="max-w-4xl mt-12 mx-auto">
             <div v-if="store.is_customer">
-                <Buy :customer_id="auth.user.userable_id"/>
+                cu
             </div>
             <div v-else-if="store.is_employee">
                 em
