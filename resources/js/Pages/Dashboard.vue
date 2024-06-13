@@ -16,13 +16,13 @@ store.set_employee(props.auth.user.userable_type === 'App\\Models\\Employee')
     <AppLayout title="Dashboard">
         <div class="max-w-4xl mt-12 mx-auto">
             <div v-if="store.is_customer">
-                <Buy :customer_id="props.auth.user.userable_id"/>
+                <Buy :customer_id="auth.user.userable_id"/>
             </div>
             <div v-else-if="store.is_employee">
                 em
             </div>
             <div v-else class="w-1/2 mx-auto">
-                <AddCustomer @created="() => store.set_customer(true)"/>
+                <AddCustomer :user_id="auth.user.id" @created="() => store.set_customer(true)"/>
             </div>
         </div>
     </AppLayout>

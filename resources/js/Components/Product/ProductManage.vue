@@ -73,7 +73,7 @@ function del(id) {
             <MyList
                 :input_list="products"
                 :is_show_able="false"
-                list_name="Supplier"
+                list_name="Product"
                 @del="del"
                 @update="update"
             />

@@ -20,7 +20,8 @@ const remove = () => store.remove_from_bag(props.product.id, props.product.sell_
 </script>
 
 <template>
-    <div v-if="product.available" class="card shadow-2xl glass bg-primary">
+    <div v-if="product.available" class="card shadow-2xl glass image-full max-h-48">
+        <figure><img :src="'images/products/'+product.id+'.png'" :alt="product.name" class="h-48" ></figure>
         <div class="card-body">
             <h3 class="card-title justify-center">{{ product.name }}</h3>
             <p :class="{'line-clamp-2':product.discount,'line-clamp-3':!product.discount}">

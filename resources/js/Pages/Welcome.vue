@@ -20,7 +20,7 @@ function get_products() {
     loading.value = false
 }
 
-setTimeout(get_products, 2000)
+setTimeout(get_products, 1000)
 </script>
 
 <template>
