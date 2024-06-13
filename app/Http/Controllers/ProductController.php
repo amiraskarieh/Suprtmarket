@@ -48,7 +48,15 @@ class ProductController extends Controller
             'is_perishable' => 'required',
             'available' => 'required',
             'supplier_id' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = 'product_' . time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('images/products'), $imageName);
+            $validated['image'] = $imageName;
+        }
 
         Product::create($validated);
 
