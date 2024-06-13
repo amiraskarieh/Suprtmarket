@@ -6,10 +6,10 @@ import {onMounted, ref} from "vue";
 const toast = useToast()
 
 const props = defineProps([
-    'id','name', 'description', 'available', 'discount', 'buy_price', 'sell_price', 'supplier_id', 'sell_number',
-    'production_date', 'perishable_data', 'is_perishable'
+    'id', 'name', 'description', 'available', 'discount', 'buy_price', 'sell_price', 'supplier_id', 'sell_number',
+    'production_date', 'perishable_data', 'is_perishable', 'image'
 ])
-const emit = defineEmits(['cancel', 'updated','created'])
+const emit = defineEmits(['cancel', 'updated', 'created'])
 
 const form = useForm({...props});
 
@@ -23,33 +23,58 @@ async function get_supplier() {
 
 onMounted(get_supplier)
 
+const photoPreview = ref(null);
+const photoInput = ref(null);
+
+const selectNewPhoto = () => {
+    photoInput.value.click();
+};
+const updatePhotoPreview = () => {
+    const photo = photoInput.value.files[0];
+
+    if (!photo) return;
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+        photoPreview.value = e.target.result;
+    };
+
+    reader.readAsDataURL(photo);
+};
+
 const submit = () => {
     form.available = +form.sell_number
     form.buy_price = +form.buy_price
     form.discount = +form.discount
     form.sell_price = +form.sell_price
     form.sell_number = +form.sell_number
-    console.log(form.perishable_data)
+    form.image = photoInput.value.files[0]
     if (form.perishable_data === undefined)
         form.perishable_data = null
     form.is_perishable = !!form.perishable_data
 
     if (props.id) {
-        axios.put(route('products.update', [form.id]), form.data())
-            .then(() => {
-                    toast.success('update successful!')
-                    form.reset()
-                    emit('updated')
-                }
-            )
+        console.log(form.image)
+        form.put(route('products.update', [form.id]), {
+            onSuccess: () => {
+                toast.success('update successful!')
+                form.reset()
+                photoPreview.value = null
+                emit('updated')
+            }
+        })
+
     } else {
-        axios.post(route('products.store'), form.data())
-            .then(() => {
-                    toast.success('create successful!')
-                    form.reset()
-                    emit('created')
-                }
-            )
+
+        form.post(route('products.store'), {
+            onSuccess: () => {
+                toast.success('create successful!')
+                form.reset()
+                photoPreview.value = null
+                emit('created')
+            }
+        })
     }
 }
 
@@ -63,6 +88,28 @@ const submit = () => {
                 <span v-else>Update</span>
                 product
             </h3>
+
+            <label class="form-control w-full">
+                <span class="label">
+                    <span class="label-text">Photo</span>
+                </span>
+                <input
+                    id="photo"
+                    ref="photoInput"
+                    type="file"
+                    class="hidden"
+                    @change="updatePhotoPreview"
+                >
+                <div v-if="id || photoPreview" class="rounded-xl overflow-hidden">
+                    <img class="w-full h-44" :src="photoPreview || '/images/products/'+form.id+'.png'" :alt="form.name"/>
+                </div>
+                <div class="flex  gap-4 flex-row-reverse">
+                    <button type="button" class="btn btn-sm btn-primary mt-2 w-52" @click.prevent="selectNewPhoto">
+                        Select A New Photo
+                    </button>
+                </div>
+            </label>
+
 
             <label class="form-control w-full ">
                 <span class="label">

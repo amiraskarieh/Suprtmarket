@@ -34,10 +34,10 @@ class CustomerController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'age' => 'sometimes|required|integer|min:0',
-            'phone' => 'sometimes|required|string|unique:customers,phone,' . $id . '|max:15',
-            'address' => 'sometimes|required|string|max:255',
+            'name' => 'string|max:255',
+            'age' => 'integer|min:0',
+            'phone' => 'string|unique:customers,phone,' . $id . '|max:15',
+            'address' => 'string|max:255',
         ]);
 
         $customer = Customer::findOrFail($id);

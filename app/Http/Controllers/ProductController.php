@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class ProductController extends Controller
 {
@@ -51,16 +54,14 @@ class ProductController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
+        $product = Product::create($validated);
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $imageName = 'product_' . time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('images/products'), $imageName);
-            $validated['image'] = $imageName;
+            $imageName = $product->id . '.png';
+            $image->move(public_path('/images/products'), $imageName);
         }
 
-        Product::create($validated);
-
-        return response()->json('{}',201);
+        return Inertia::render('Employee', ['product' => $product]);
     }
 
     public function update(Request $request,Product $product)
@@ -81,15 +82,16 @@ class ProductController extends Controller
 
         $product->update($validated);
 
-        return $this->index();
+        return Inertia::render('Employee', ['product' => $product]);
     }
 
     public function destroy($id)
     {
         $product = Product::findOrFail($id);
+        Storage::delete(public_path('/images/products/'.$id.'.png'));
         $product->delete();
 
-        return $this->index();
+        return Inertia::render('Employee');
     }
 
     public function getProductSales(Request $request, $product_id)

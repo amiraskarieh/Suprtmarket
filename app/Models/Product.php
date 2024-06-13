@@ -23,7 +23,6 @@ class Product extends Model
         'sell_number',
         'buy_price',
         'supplier_id',
-        'image',
     ];
 
     public function product_transactions(): HasMany

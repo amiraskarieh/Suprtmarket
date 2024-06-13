@@ -71,23 +71,6 @@ const job_types = ref(['manger', 'cashier', 'seller'])
                 Customer
             </h3>
 
-            <label v-if="!props.id" class="form-control w-full ">
-                <span class="label">
-                    <span class="label-text">User</span>
-                </span>
-                <select
-                    id="supplier"
-                    v-model="form.user_id"
-                    type="text"
-                    class="select select-bordered w-full select-primary"
-                    required>
-                    <option disabled selected>select user</option>
-                    <option v-for="user in users" :key="user.id" :value="user.id">
-                        {{ user.name }}-{{ user.email }}
-                    </option>
-                </select>
-            </label>
-
             <label class="form-control w-full ">
                 <span class="label">
                     <span class="label-text">Name</span>
