@@ -41,3 +41,4 @@ Route::get('/transactions', [TransactionController::class, 'getTransactionsBetwe
 Route::get('/products', [ProductController::class, 'index'])->name('products.get');
 Route::get('/products/{product_id}/sales', [ProductController::class, 'getProductSales'])->name('products.sales');
 Route::get('/suppliers/{supplier}/supplied-products-count', [SupplierController::class, 'getSuppliedProductsCount'])->name('suppliers.supplied-products-count');
+Route::get('logs/recent', [LogController::class, 'getRecentLogs'])->name('logs.recent');
