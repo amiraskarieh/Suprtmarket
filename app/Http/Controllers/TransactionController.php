@@ -68,31 +68,69 @@ class TransactionController extends Controller
         return redirect()->route('transactions.get');
     }
 
-    public function getCustomerProducts($customer_id)
+    public function getCustomerProducts($customerId)
     {
-        $customer = Customer::findOrFail($customer_id);
+        $transactions = Transaction::where('customer_id', $customerId)
+            ->with(['products.product' => function($query) {
+                $query->select('id', 'name');
+            }])
+            ->get();
 
-        $products = Transaction::where('customer_id', $customer_id)
-            ->with('products')
-            ->get()
-            ->pluck('products')
-            ->flatten()
-            ->unique('id');
+        $result = $transactions->map(function ($transaction) {
+            return [
+                'price' => $transaction->price,
+                'date' => $transaction->date,
+                'products' => $transaction->products->map(function ($productTransaction) {
+                    return [
+                        'product_name' => $productTransaction->product->name,
+                        'count' => $productTransaction->count,
+                        'product_id' => $productTransaction->product->id,
+                    ];
+                })->all(),
+            ];
+        });
 
-        return response()->json($products);
+        return response()->json($result);
     }
 
-    public function getEmployeeProducts($employee_id)
+    public function getEmployeeTransactions($employeeId)
     {
-        $employee = Employee::findOrFail($employee_id);
+        $transactions = Transaction::where('employee_id', $employeeId)
+            ->with(['products.product' => function($query) {
+                $query->select('id', 'name');
+            }])
+            ->get();
 
-        $products = Transaction::where('employee_id', $employee_id)
-            ->with('products')
-            ->get()
-            ->pluck('products')
-            ->flatten()
-            ->unique('id');
+        $result = $transactions->map(function ($transaction) {
+            return [
+                'price' => $transaction->price,
+                'date' => $transaction->date,
+                'products' => $transaction->products->map(function ($productTransaction) {
+                    return [
+                        'product_name' => $productTransaction->product->name,
+                        'count' => $productTransaction->count,
+                        'product_id' => $productTransaction->product->id,
+                    ];
+                })->all(),
+            ];
+        });
 
-        return response()->json($products);
+        return response()->json($result);
+    }
+
+    public function getTransactionsBetweenDates(Request $request)
+    {
+        $validated = $request->validate([
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+        ]);
+
+        $startDate = Carbon::parse($validated['start_date']);
+        $endDate = Carbon::parse($validated['end_date']);
+
+        $transactions = Transaction::whereBetween('date', [$startDate, $endDate])
+            ->pluck('date', 'id');
+
+        return response()->json($transactions);
     }
 }

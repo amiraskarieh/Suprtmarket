@@ -64,12 +64,26 @@ class SupplierController extends Controller
         return response()->json(['message' => 'Products supplied successfully'], 201);
     }
 
-    public function getSupplierProducts($supplier_id)
+    public function getSuppliedProductsCount(Supplier $supplier)
     {
-        $supplier = Supplier::findOrFail($supplier_id);
+        $suppliedProducts = $supplier->supplied()
+            ->select('product_id', 'count')
+            ->with('product:id,name,sell_price')
+            ->get();
 
-        $products = Product::where('supplier_id', $supplier_id)->get();
+        $formattedProducts = $suppliedProducts->map(function ($item) {
+            return [
+                'product_id' => $item->product->id,
+                'product_name' => $item->product->name,
+                'sell_price' => $item->product->sell_price,
+                'count' => $item->count,
+            ];
+        });
 
-        return response()->json($products);
+        return response()->json([
+            'supplier_id' => $supplier->id,
+            'supplier_name' => $supplier->name,
+            'supplied_products' => $formattedProducts,
+        ]);
     }
 }
