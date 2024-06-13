@@ -1,37 +1,19 @@
 <?php
 
-namespace App\Models;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
-use Illuminate\Database\Eloquent\Model;
-
-class SupplierLog extends Model
+class CreateSupplierLogTriggers extends Migration
 {
-    protected $table = 'supplier_logs'; 
-
-    protected $fillable = [
-        'supplier_id',
-        'operation_type',
-        'old_value',
-        'new_value',
-        'user_id',
-        'timestamp',<?php
-
-        use Illuminate\Database\Migrations\Migration;
-        use Illuminate\Database\Schema\Blueprint;
-        use Illuminate\Support\Facades\Schema;
-        use Illuminate\Support\Facades\DB;
-        
-        class CreateSupplierLogTriggers extends Migration
-        {
-            /**
-             * Run the migrations.
-             *
-             * @return void
-             */
-            public function up()
-            {
-                // After Insert Trigger for Supplier Logs
-                DB::unprepared('
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        // After Insert Trigger for Supplier Logs
+        DB::unprepared('
                     CREATE TRIGGER supplier_log_after_insert
                     AFTER INSERT ON Supplier
                     FOR EACH ROW
@@ -54,9 +36,9 @@ class SupplierLog extends Model
                         );
                     END;
                 ');
-        
-                // Before Delete Trigger for Supplier Logs
-                DB::unprepared('
+
+        // Before Delete Trigger for Supplier Logs
+        DB::unprepared('
                     CREATE TRIGGER supplier_log_before_delete
                     BEFORE DELETE ON Supplier
                     FOR EACH ROW
@@ -79,18 +61,16 @@ class SupplierLog extends Model
                         );
                     END;
                 ');
-            }
-        
-            /**
-             * Reverse the migrations.
-             *
-             * @return void
-             */
-            public function down()
-            {
-                DB::statement('DROP TRIGGER IF EXISTS supplier_log_after_insert');
-                DB::statement('DROP TRIGGER IF EXISTS supplier_log_before_delete');
-            }
-        }
-    ];
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        DB::statement('DROP TRIGGER IF EXISTS supplier_log_after_insert');
+        DB::statement('DROP TRIGGER IF EXISTS supplier_log_before_delete');
+    }
 }
