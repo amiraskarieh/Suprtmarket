@@ -14,9 +14,26 @@ defineProps(['transactions'])
                 Employee: {{ transaction.employee.name }}, price {{ transaction.price }}$
             </div>
             <div class="collapse-content">
-                <div class="flex items-start gap-2">
-                    <div class="basis-1/3 flex flex-col gap-3">
-                        <details class="collapse border border-primary collapse-arrow" v-for="product in transaction.products" :key="product.id">
+                <div class="flex flex-col sm:flex-row items-start gap-2">
+                    <div class="basis-2/3 flex gap-2">
+                        <div class="basis-1/2  card border border-primary">
+                            <div class="card-body">
+                                <h3 class="card-title">Customer</h3>
+                                <span>name: {{ transaction.customer.name }}</span>
+                                <span>phone: {{ transaction.customer.phone }}</span>
+                            </div>
+                        </div>
+                        <div class="basis-1/2 card border border-primary">
+                            <div class="card-body">
+                                <h3 class="card-title">Employee</h3>
+                                <span>name: {{ transaction.employee.name }}</span>
+                                <span>phone: {{ transaction.employee.phone }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sm:basis-1/3  flex flex-col gap-3">
+                        <details class="collapse border border-primary collapse-arrow"
+                                 v-for="product in transaction.products" :key="product.id">
                             <summary class="collapse-title text-xl font-medium">
                                 name:{{ product.product.name }},
                                 count: {{ product.count }}
@@ -39,20 +56,6 @@ defineProps(['transactions'])
                                     }}$</span>
                             </div>
                         </details>
-                    </div>
-                    <div class="basis-1/3 card border border-primary">
-                        <div class="card-body">
-                            <h3 class="card-title">Employee</h3>
-                            <span>name: {{ transaction.employee.name }}</span>
-                            <span>phone: {{ transaction.employee.phone }}</span>
-                        </div>
-                    </div>
-                    <div class="basis-1/3 card border border-primary">
-                        <div class="card-body">
-                            <h3 class="card-title">Customer</h3>
-                            <span>name: {{ transaction.customer.name }}</span>
-                            <span>phone: {{ transaction.customer.phone }}</span>
-                        </div>
                     </div>
                 </div>
             </div>

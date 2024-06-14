@@ -38,8 +38,8 @@ Route::post('users/add-relation', [UserController::class, 'addRelation'])->name(
 
 Route::get('/employee/{employeeId}/transactions', [TransactionController::class, 'getEmployeeTransactions'])->name('employee.transactions');
 Route::get('/customer/{customerId}/products', [TransactionController::class, 'getCustomerTransactions'])->name('customer.transactions');
+Route::get('logs/recent', [LogController::class, 'getRecentLogs'])->name('logs.recent');
 
 Route::get('/transactions', [TransactionController::class, 'getTransactionsBetweenDates'])->name('transactions.between_dates');
 Route::get('/products/{product_id}/sales', [ProductController::class, 'getProductSales'])->name('products.sales');
 Route::get('/suppliers/{supplier}/supplied-products-count', [SupplierController::class, 'getSuppliedProductsCount'])->name('suppliers.supplied-products-count');
-Route::get('logs/recent', [LogController::class, 'getRecentLogs'])->name('logs.recent');

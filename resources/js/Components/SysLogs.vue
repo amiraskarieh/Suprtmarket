@@ -27,12 +27,14 @@ const operation_type_color = {
 
 <template>
     <main class="max-w-4xl mx-auto">
-        <transition-group name="down-up" tag="div" class="mockup-code bg-neutral">
-        <pre v-for="log in logs" :key="log.id" data-prefix=">" class="overflow-hidden">
+        <transition-group name="down-up" tag="div" class="mockup-code overflow-y-auto h-96 bg-neutral">
+        <pre v-for="log in logs" :key="log.id" data-prefix=">">
             <code><span class="text-primary ">[{{
                     log.created_at
                 }}]</span> In table: <span
-                class="text-primary">{{ log.logable_type.split('/')[log.logable_type.split('/').length - 1] }}</span> <span
+                class="text-primary">{{
+                    log.logable_type.split('/')[log.logable_type.split('/').length - 1]
+                }}</span> <span
                 :class="operation_type_color[log.operation_type]">{{
                     log.operation_type
                 }}</span> ID: <span class="text-primary">{{ log.logable_id }}</span></code>
@@ -46,6 +48,7 @@ const operation_type_color = {
 .down-up-leave-active {
     transition: all 0.5s ease;
 }
+
 .down-up-enter-from,
 .down-up-leave-to {
     opacity: 0;
