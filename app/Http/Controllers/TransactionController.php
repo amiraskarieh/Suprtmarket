@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\Employee;
 use App\Models\Product;
 use App\Models\ProductTransactions;
+use App\Models\Supplier;
 use App\Models\Transaction;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
@@ -71,8 +73,8 @@ class TransactionController extends Controller
     public function getCustomerTransactions($customerId)
     {
         $transactions = Transaction::where('customer_id', $customerId)
-            ->with(['products.product' => function($query) {
-                $query->select('id', 'name');
+            ->with(['products.product' => function ($query) {
+                $query->select('id');
             }])
             ->get();
 
@@ -81,12 +83,15 @@ class TransactionController extends Controller
                 'price' => $transaction->price,
                 'date' => $transaction->date,
                 'products' => $transaction->products->map(function ($productTransaction) {
+                    $product = Product::find($productTransaction->product_id);
                     return [
-                        'product_name' => $productTransaction->product->name,
+                        'product' => Product::find($productTransaction->product_id),
+                        'supplier' => Supplier::find($product->supplier_id),
                         'count' => $productTransaction->count,
-                        'product_id' => $productTransaction->product->id,
                     ];
                 })->all(),
+                'employee' => Employee::find($transaction->employee_id),
+                'customer' => Customer::find($transaction->customer_id),
             ];
         });
 
@@ -96,8 +101,8 @@ class TransactionController extends Controller
     public function getEmployeeTransactions($employeeId)
     {
         $transactions = Transaction::where('employee_id', $employeeId)
-            ->with(['products.product' => function($query) {
-                $query->select('id', 'name');
+            ->with(['products.product' => function ($query) {
+                $query->select('id');
             }])
             ->get();
 
@@ -106,12 +111,15 @@ class TransactionController extends Controller
                 'price' => $transaction->price,
                 'date' => $transaction->date,
                 'products' => $transaction->products->map(function ($productTransaction) {
+                    $product = Product::find($productTransaction->product_id);
                     return [
-                        'product_name' => $productTransaction->product->name,
+                        'product' => Product::find($productTransaction->product_id),
+                        'supplier' => Supplier::find($product->supplier_id),
                         'count' => $productTransaction->count,
-                        'product_id' => $productTransaction->product->id,
                     ];
                 })->all(),
+                'employee' => Employee::find($transaction->employee_id),
+                'customer' => Customer::find($transaction->customer_id),
             ];
         });
 

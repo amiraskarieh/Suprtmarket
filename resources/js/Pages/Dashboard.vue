@@ -28,7 +28,7 @@ onMounted(get_transaction)
 <template>
     <AppLayout title="Dashboard">
         <div class="max-w-4xl mt-12 mx-auto">
-            <div v-if="store.is_customer">
+            <div v-if="store.is_customer || store.is_employee">
                 <Transactions :transactions="transactions"/>
             </div>
             <div v-else class="w-1/2 mx-auto">
