@@ -11,10 +11,10 @@ const toast = useToast()
 const products = ref([])
 const loading = ref(true)
 
-const form = useForm({name: "", max_sell_price: 100, available: false, sort_by: ''})
+// const form = useForm({max_sell_price: 100, available: false, sort_by: 'created_at'})
 
 function get_products() {
-    axios.get(route('products.index'), form.data())
+    axios.get(route('products.index')/*, form.data()*/)
         .then(r => products.value = r.data)
         .catch(r => toast.error(r))
     loading.value = false
@@ -26,6 +26,7 @@ setTimeout(get_products, 1000)
 <template>
     <AppLayout title="Welcome">
         <main class="flex flex-col md:flex-row gap-4 p-10">
+<!--
             <div class="basis-1 md:basis-1/2 lg:basis-1/4 card glass row-span-12">
                 <div class="card-body">
                     <h3 class="card-title">
@@ -47,8 +48,9 @@ setTimeout(get_products, 1000)
                     </div>
                 </div>
             </div>
-
-            <div class="lg:basis-3/4 md:basis-1/2 basis-1 grid lg:grid-cols-4 grid-cols-1 gap-3">
+-->
+<!--            <div class="lg:basis-3/4 md:basis-1/2 basis-1 grid lg:grid-cols-4 grid-cols-1 gap-3">-->
+            <div class="w-full grid lg:grid-cols-4 grid-cols-1 gap-3">
                 <template v-if="loading">
                     <ProductCardLoader v-for="i in 12" :key="i"/>
                 </template>
