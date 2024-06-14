@@ -68,7 +68,7 @@ class TransactionController extends Controller
         return redirect()->route('transactions.get');
     }
 
-    public function getCustomerProducts($customerId)
+    public function getCustomerTransactions($customerId)
     {
         $transactions = Transaction::where('customer_id', $customerId)
             ->with(['products.product' => function($query) {

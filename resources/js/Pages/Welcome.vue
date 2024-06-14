@@ -4,8 +4,8 @@ import {ref} from "vue";
 import ProductCard from "@/Components/ProductCard.vue";
 import ProductCardLoader from "@/Components/ProductCardLoader.vue";
 import {useToast} from "vue-toastification";
-import FilterProduct from "@/Components/FilterProduct.vue";
-import {useForm} from "@inertiajs/vue3";
+// import FilterProduct from "@/Components/FilterProduct.vue";
+// import {useForm} from "@inertiajs/vue3";
 
 const toast = useToast()
 const products = ref([])
@@ -50,7 +50,7 @@ setTimeout(get_products, 1000)
             </div>
 -->
 <!--            <div class="lg:basis-3/4 md:basis-1/2 basis-1 grid lg:grid-cols-4 grid-cols-1 gap-3">-->
-            <div class="w-full grid lg:grid-cols-4 grid-cols-1 gap-3">
+            <div class="w-full grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-3">
                 <template v-if="loading">
                     <ProductCardLoader v-for="i in 12" :key="i"/>
                 </template>
