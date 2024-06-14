@@ -15,9 +15,6 @@ return new class extends Migration
             $table->id();
             $table->nullableMorphs('logable');
             $table->char('operation_type', 100);
-            $table->foreignId('user_id')->constrained()
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
             $table->timestamps();
         });
     }

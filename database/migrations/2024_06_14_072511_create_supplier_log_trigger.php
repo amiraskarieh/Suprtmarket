@@ -20,14 +20,33 @@ return new class extends Migration
                     `logable_type`,
                     `logable_id`,
                     `operation_type`,
-                    `user_id`,
                     `created_at`,
                     `updated_at`
                 ) VALUES (
-                    "App\Models\Supplier",
+                    "App/Models/Supplier",
                     NEW.id,
                     "INSERT",
-                    SESSION_USER_ID(),
+                    NOW(),
+                    NULL
+                );
+            END;
+        ');
+
+        // After Update Trigger for Product Logs
+        DB::unprepared('
+            CREATE TRIGGER supplier_log_after_update
+            AFTER UPDATE ON suppliers FOR EACH ROW
+            BEGIN
+                INSERT INTO `logs` (
+                    `logable_type`,
+                    `logable_id`,
+                    `operation_type`,
+                    `created_at`,
+                    `updated_at`
+                ) VALUES (
+                    "App/Models/Supplier",
+                    NEW.id,
+                    "UPDATE",
                     NOW(),
                     NULL
                 );
@@ -43,14 +62,12 @@ return new class extends Migration
                     `logable_type`,
                     `logable_id`,
                     `operation_type`,
-                    `user_id`,
                     `created_at`,
                     `updated_at`
                 ) VALUES (
-                    "App\Models\Supplier",
+                    "App/Models/Supplier",
                     OLd.id,
                     "DELETE",
-                    SESSION_USER_ID(),
                     NOW(),
                     NULL
                 );
@@ -65,6 +82,7 @@ return new class extends Migration
     public function down(): void
     {
         DB::statement('DROP TRIGGER IF EXISTS supplier_log_after_insert');
+        DB::statement('DROP TRIGGER IF EXISTS supplier_log_after_update');
         DB::statement('DROP TRIGGER IF EXISTS supplier_log_before_delete');
     }
 };

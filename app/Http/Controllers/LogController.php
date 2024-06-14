@@ -9,11 +9,7 @@ class LogController extends Controller
 {
     public function getRecentLogs(Request $request)
     {
-        $validated = $request->validate([
-            'n' => 'required|integer|min:10'
-        ]);
-
-        $logs = Log::all()->sortBy('created_at')->take($validated['n']);
+        $logs = Log::all()->sortBy('created_at')->take(40);
 
         return response()->json($logs);
     }

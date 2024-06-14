@@ -47,7 +47,6 @@ function del(id) {
     <main class="max-w-4xl mx-auto">
         <div class="gap-4 grid grid-cols-2">
             <transition name="list" mode="out-in">
-
                 <AddProduct v-if="show_edit"
                             :key="select_for_update.id"
                             :id="select_for_update.id"

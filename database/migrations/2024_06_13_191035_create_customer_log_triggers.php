@@ -18,14 +18,12 @@ return new class extends Migration {
                     `logable_type`,
                     `logable_id`,
                     `operation_type`,
-                    `user_id`,
                     `created_at`,
                     `updated_at`
                 ) VALUES (
-                    "App\Models\Customer",
+                    "App/Models/Customer",
                     NEW.id,
                     "INSERT",
-                    SESSION_USER_ID(),
                     NOW(),
                     NULL
                 );
@@ -41,14 +39,12 @@ return new class extends Migration {
                     `logable_id`,
                     `logable_type`,
                     `operation_type`,
-                    `user_id`,
                     `created_at`,
                     `updated_at`
                 ) VALUES (
                     NEW.id,
-                    "App\Models\Customer",
+                    "App/Models/Customer",
                     "UPDATE",
-                    SESSION_USER_ID(),
                     NOW(),
                     NULL
                 );
@@ -64,14 +60,12 @@ return new class extends Migration {
                     `logable_id`,
                     `logable_type`,
                     `operation_type`,
-                    `user_id`,
                     `created_at`,
                     `updated_at`
                 ) VALUES (
                     OLD.id,
-                    "App\Models\Customer",
+                    "App/Models/Customer",
                     "DELETE",
-                    SESSION_USER_ID(),
                     NOW(),
                     NULL
                 );

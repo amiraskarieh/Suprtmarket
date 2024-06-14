@@ -6,8 +6,9 @@ import SupplierManage from "@/Components/Supplier/SupplierManage.vue";
 import ProductManage from "@/Components/Product/ProductManage.vue";
 import {useStore} from "@/Store/my_store.js";
 import {router} from "@inertiajs/vue3";
+import SysLogs from "@/Components/SysLogs.vue";
 
-const comp = {'product': ProductManage, 'employee': EmployeeManage, 'supplier': SupplierManage}
+const comp = {'product': ProductManage, 'employee': EmployeeManage, 'supplier': SupplierManage, 'syslogs':SysLogs}
 const current_comp = ref('product')
 
 const store = useStore()
