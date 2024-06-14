@@ -1,7 +1,6 @@
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
 import AddCustomer from "@/Components/AddCustomer.vue";
-import Buy from "@/Components/Buy.vue";
 import {useStore} from "@/Store/my_store.js";
 
 

@@ -4,15 +4,17 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
     public function up(): void
     {
+        // After Insert Trigger for Transaction Logs
         DB::unprepared('
-            CREATE TRIGGER customer_log_after_insert
-            AFTER INSERT ON customers FOR EACH ROW
+            CREATE TRIGGER transaction_log_after_insert
+            AFTER INSERT ON transactions FOR EACH ROW
             BEGIN
                 INSERT INTO `logs` (
                     `logable_type`,
@@ -22,7 +24,7 @@ return new class extends Migration {
                     `created_at`,
                     `updated_at`
                 ) VALUES (
-                    "App\Models\Customer",
+                    "App\Models\Transaction",
                     NEW.id,
                     "INSERT",
                     SESSION_USER_ID(),
@@ -32,44 +34,21 @@ return new class extends Migration {
             END;
         ');
 
-        // After Update Trigger for Customer Logs
+        // Before Delete Trigger for Transaction Logs
         DB::unprepared('
-            CREATE TRIGGER customer_log_after_update
-            AFTER UPDATE ON customers FOR EACH ROW
+            CREATE TRIGGER transaction_log_before_delete
+            BEFORE DELETE ON transactions FOR EACH ROW
             BEGIN
                 INSERT INTO `logs` (
-                    `logable_id`,
                     `logable_type`,
+                    `logable_id`,
                     `operation_type`,
                     `user_id`,
                     `created_at`,
                     `updated_at`
                 ) VALUES (
-                    NEW.id,
-                    "App\Models\Customer",
-                    "UPDATE",
-                    SESSION_USER_ID(),
-                    NOW(),
-                    NULL
-                );
-            END;
-        ');
-
-        // Before Delete Trigger for Customer Logs
-        DB::unprepared('
-            CREATE TRIGGER customer_log_before_delete
-            BEFORE DELETE ON customers FOR EACH ROW
-            BEGIN
-                INSERT INTO `logs` (
-                    `logable_id`,
-                    `logable_type`,
-                    `operation_type`,
-                    `user_id`,
-                    `created_at`,
-                    `updated_at`
-                ) VALUES (
+                    "App\Models\Transaction",
                     OLD.id,
-                    "App\Models\Customer",
                     "DELETE",
                     SESSION_USER_ID(),
                     NOW(),
@@ -84,8 +63,7 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        DB::statement('DROP TRIGGER IF EXISTS customer_log_after_insert');
-        DB::statement('DROP TRIGGER IF EXISTS customer_log_after_update');
-        DB::statement('DROP TRIGGER IF EXISTS customer_log_before_delete');
+        DB::statement('DROP TRIGGER IF EXISTS transaction_log_after_insert');
+        DB::statement('DROP TRIGGER IF EXISTS transaction_log_before_delete');
     }
 };
